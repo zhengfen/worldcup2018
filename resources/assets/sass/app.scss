@@ -1,0 +1,252 @@
+
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/_variables";
+@import "~font-awesome/scss/font-awesome.scss";
+// flag-icon-css
+@import '~flag-icon-css/sass/flag-icon.scss';
+
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+body {
+    background: #a6a2a3;
+}
+
+table {
+    @extend .table;
+}
+
+td {
+    @extend .align-middle;
+}
+
+footer {
+    @extend .mt-4;
+}
+
+.table-vsm td, .table-vsm th {
+    padding: 0.2rem;
+    font-size: 0.8rem;
+}
+
+.table-noborder td {
+    border-top: 0;
+}
+
+.team--name {
+    white-space: nowrap;
+    > i.teammatches {
+        cursor: pointer;
+    }
+    > span {
+        cursor: pointer;
+    }
+    &.team--name--hover {
+        letter-spacing: -0.4px;
+        font-weight: bold;
+    }
+}
+
+.groups,
+.stadiums {
+    @extend .row;
+    @extend .mb-4;
+    @extend .justify-content-around;
+    &>.col {
+        flex-basis: 25%;
+    }
+    & .card--group {
+        @extend .mb-4;
+        table {
+            @extend .table-vsm;
+        }
+        button {
+            @extend .p-2;
+            @extend .close;
+            @extend .btn-block;
+            font-size: 0.9rem;
+        }
+    }
+    &:nth-child(4) {
+        @include clearfix();
+    }
+}
+
+.knockouts {
+    @extend .row;
+    @extend .justify-content-around;
+    @extend .align-items-center;
+    & .card {
+        @extend .mb-4;
+        @extend .ml-3;
+        @extend .mr-3;
+        flex-grow: 1;
+    }
+}
+
+.card--round_2 {
+    @extend .text-white;
+    @extend .bg-success;
+    & > .card-header {
+        @extend .text-white;
+        @extend .bg-success;
+    }
+}
+
+.card--round_2_loser {
+    @extend .text-dark;
+    @extend .bg-warning;
+    & > .card-header {
+        @extend .text-dark;
+        @extend .bg-warning;
+    }
+}
+
+.table-groups,
+.table-knockouts {
+    &--result {
+        margin: 5px;
+        width: 2rem;
+        text-align: center;
+        border-radius: 0;
+        @extend .form-control;
+        @extend .form-control-sm;
+    }
+    &--spacer {
+        cursor: help;
+    }
+    &--label {
+        margin-bottom: 0;
+    }
+    &--finished {
+    }
+    &--winner {
+        background-color: #c3e6cb;
+    }
+    &--loser {
+        background-color: #ff626d;
+    }
+    &--draw {
+        background-color: #bee5eb;
+    }
+    &--hometeam {
+        white-space: nowrap;
+    }
+    &--awayteam {
+        white-space: nowrap;
+    }
+}
+
+.card {
+    & > table {
+        margin-bottom: 0;
+    }
+    &-footer table {
+        margin-bottom: 0;
+    }
+}
+
+.close {
+    cursor: pointer;
+    &--close span {
+        transform: rotate(0deg);
+        transition: all 0.5s;
+        display: inline-block;
+    }
+    &--plus span {
+        transform: rotate(-45deg);
+        transition: all 0.5s;
+        display: inline-block;
+    }
+    &:focus {
+        outline: none;
+    }
+}
+
+.gold {
+    color: #FFD700;
+}
+
+.bronze {
+    color: #cd7f32;
+}
+
+tbody.tbody {
+    &--close {
+        display: none;
+    }
+
+    &--open {
+        display: table-row-group;
+    }
+}
+
+.map {
+    height: 500px;
+}
+
+/* Absolute Center Spinner */
+.loading {
+    position: fixed;
+    z-index: 999;
+    height: 2em;
+    width: 2em;
+    overflow: visible;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+/* Transparent Overlay */
+.loading:before {
+    content: '';
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+}
+
+.loading:not(:required) {
+    font: 0/0 a;
+    color: transparent;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
+}
+
+.loading:not(:required):after {
+    content: '';
+    display: block;
+    font-size: 10px;
+    width: 1em;
+    height: 1em;
+    margin-top: -0.5em;
+    animation: spinner 1500ms infinite linear;
+    border-radius: 0.5em;
+    box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+}
+
+/* Animation */
+
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
