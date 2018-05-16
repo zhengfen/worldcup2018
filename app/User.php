@@ -36,8 +36,7 @@ class User extends Authenticatable
                 
     public function pronostic(int $match_id){
         return $this->pronostics->where('match_id',$match_id)->first();
-    }
-    
+    }   
    
     // team standings according to user pronostics, grouped by group    
     public function standings($groups=null){
@@ -188,11 +187,14 @@ class User extends Authenticatable
         return true;
     }   
     
-    public function points(){
+    public function points($matches=null){
         $points = [];
         $point = 0;
         array_push($points,0);
-        foreach(Match::orderBy('date')->get() as $match){
+        if(!$matches){
+            $matches = Match::orderBy('date')->get();        
+        }
+        foreach($matches as $match){
             if (is_null($match->score_h) || is_null($match->score_a))   break;   // the match is not finished yet
             else{
                 if(is_null($this->score_h($match->id)) || is_null($this->score_a($match->id))) continue;  // user have not complete the pronostics for the match

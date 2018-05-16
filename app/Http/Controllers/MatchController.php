@@ -43,7 +43,7 @@ class MatchController extends Controller
     }
     
     public function update_scores(Request $request){
-        find($request->match_id)->update(['score_h'=>$request->score_h,'score_a'=>$request->score_a ]);
+        Match::find($request->match_id)->update(['score_h'=>$request->score_h,'score_a'=>$request->score_a ]);
     }    
     public function update_scores_from_json(){
         $url = 'https://raw.githubusercontent.com/lsv/fifa-worldcup-2018/master/data.json';
