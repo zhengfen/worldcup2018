@@ -15,6 +15,7 @@ const state = {
     loading: true as boolean,
     data: null as AppModel,
     pronostics: [],
+    statistics_group: []
 };
 
 // getter's result is cached based on its dependencies, and will only re-evaluate when some of its dependencies have changed. computed properties for stores
@@ -127,7 +128,9 @@ const mutations = {
     },
 
     ['LOAD_PRONOSTICS'](state:any, payload: any) {
-        state.pronostics = payload;
+        state.pronostics = payload.pronostics;
+        state.statistics_group = payload.statistics_group;
+        console.log(state.statistics_group);
     },   
 };
 

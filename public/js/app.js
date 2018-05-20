@@ -29931,6 +29931,7 @@ const state = {
     loading: true,
     data: null,
     pronostics: [],
+    statistics_group: []
 };
 // getter's result is cached based on its dependencies, and will only re-evaluate when some of its dependencies have changed. computed properties for stores
 const getters = {};
@@ -30034,7 +30035,9 @@ const mutations = {
         }
     },
     ['LOAD_PRONOSTICS'](state, payload) {
-        state.pronostics = payload;
+        state.pronostics = payload.pronostics;
+        state.statistics_group = payload.statistics_group;
+        console.log(state.statistics_group);
     },
 };
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -67175,7 +67178,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     date: function date() {
@@ -67268,14 +67270,12 @@ var render = function() {
                     [_c("a", { staticClass: "nav-link" }, [_vm._v("Stadiums")])]
                   ),
                   _vm._v(" "),
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _vm._m(2)
+                  _vm._m(1)
                 ],
                 1
               ),
               _vm._v(" "),
-              _vm._m(3)
+              _vm._m(2)
             ])
           ],
           1
@@ -67308,16 +67308,6 @@ var staticRenderFns = [
     return _c("li", { staticClass: "nav-item" }, [
       _c("a", { staticClass: "nav-link", attrs: { href: "/ranking" } }, [
         _vm._v("Classement")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "nav-item" }, [
-      _c("a", { staticClass: "nav-link", attrs: { href: "/admin" } }, [
-        _vm._v("Admin")
       ])
     ])
   },
@@ -73458,6 +73448,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
 
 
 
@@ -73549,6 +73540,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                     score_a: this.pronostic.score_a
                 };
             } else return { score_h: null, score_a: null };
+        },
+        statistics: function statistics() {
+            var id = this.game.getId();
+            if (id < 49) {
+                var statistics = this.$store.state.Data.statistics_group[id];
+                if (statistics) {
+                    return '<br>' + statistics.percent_h + '% ' + statistics.percent_a + '%';
+                }
+            }
         },
         hometeam: function hometeam() {
             if (this.pronostic && this.pronostic.team_h) {
@@ -73671,7 +73671,11 @@ var render = function() {
         [
           _c("small", {
             domProps: { textContent: _vm._s("Match " + _vm.game.getId()) }
-          })
+          }),
+          _vm._v(" "),
+          _vm.disabled
+            ? _c("small", { domProps: { innerHTML: _vm._s(_vm.statistics) } })
+            : _vm._e()
         ]
       ),
       _vm._v(" "),

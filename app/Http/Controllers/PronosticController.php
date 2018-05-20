@@ -42,11 +42,17 @@ class PronosticController extends Controller
             'standings'=>$standings,
         ]);
     } 
-    // get pronostics 
+    // get pronostics for the current user and statistics
     public function index_json()
     {          
         $pronostics = Auth::user()->pronostics;
-        return $pronostics;        
+        $matches = Match::where('id','<',49)->where('date','<',Carbon::now()->addHours(24))->orderBy('date','asc')->get();
+        $statistics_group = Match::statistics_group($matches);
+        //return $pronostics;        
+        return response()->json([
+            'pronostics' => $pronostics,
+            'statistics_group' => $statistics_group
+        ]);
     }
     
     // ajax udpate    
@@ -61,6 +67,5 @@ class PronosticController extends Controller
             Auth::user()->update_knockouts();
         }
     }
-
     
 }

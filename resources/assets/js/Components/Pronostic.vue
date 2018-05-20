@@ -9,6 +9,7 @@
         </td>
         <td :class="gameclass + '--spacer'" class="text-center" :title="game.getStadium().getName()">
             <small v-text="'Match ' + game.getId()"></small>
+            <small v-if="disabled" v-html="statistics"></small>
         </td>
         <td :class="awayclass + ' ' + gameclass + '--awayteam'">
             <label :class="gameclass + '--label'">
@@ -115,6 +116,14 @@
                 }
                else return { score_h: null, score_a:null };
             },   
+            statistics(){
+                let id = this.game.getId();
+                if (id < 49){
+                    let statistics = this.$store.state.Data.statistics_group[id];
+                    if(statistics) { return '<br>'+ statistics.percent_h + '% '+ statistics.percent_a + '%'; }
+                }
+                
+            },
             hometeam(){
                 if (this.pronostic && this.pronostic.team_h){ 
                     let team_id = this.pronostic.team_h;

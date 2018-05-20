@@ -61,27 +61,3 @@ class FrontController extends Controller
     }
     
 }
-
-        // statistics for each match 
-        /*
-        $today = Carbon::now();
-        $tomorrow = Carbon::now()->addHours(24); 
-        $matches = Match::where('date','<',$tomorrow)->where('date','>', $today)->get();
-        foreach($matches as $match){
-         //   $pronostics_count = Pronostic::where('match_id',$match->id)->count();
-         //   $count_tie = DB::table('pronostics')->where('match_id',$match->id)->whereColumn('score_h','score_a')->count();
-         //   $count_h = DB::table('pronostics')->where('match_id',$match->id)->whereColumn('score_h','>','score_a')->count();
-         //   $count_a = DB::table('pronostics')->where('match_id',$match->id)->whereColumn('score_h','<','score_a')->count(); 
-            $pronostics = Pronostic::where('match_id',$match->id)->get();
-            $count_h = 0;
-            $count_a = 0;
-            $count_tie = 0;
-            foreach($pronostics as $pronostic){
-                switch ($pronostic->score_h <=> $pronostic->score_a){
-                    case 0 : $count_tie +=1; break;   // tie
-                    case 1 : $count_h +=1; break;  // home team wins
-                    case -1: $count_a +=1; break;  // home team loses
-                }  
-            }
-        }
-         */

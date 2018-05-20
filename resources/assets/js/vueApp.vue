@@ -15,8 +15,7 @@
                     <router-link tag="li" class="nav-item" :to="{name: 'stadiums'}" :exact-active-class="'active'">
                         <a class="nav-link">Stadiums</a>
                     </router-link>
-                    <li class="nav-item"><a  class="nav-link" href="/ranking">Classement</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/admin">Admin</a></li>
+                    <li class="nav-item"><a  class="nav-link" href="/ranking">Classement</a></li>                    
                 </ul>
 
                 <!-- Right Side Of Navbar -->

@@ -11,7 +11,6 @@
                         <thead>
                         <tr>
                             <th scope="col" class="text-center"><span title="Name">Nom affiché</span></th>
-                            <th scope="col" class="text-center"><span title="Username">Login désiré</span></th>
                             <th scope="col" class="text-center"><span title="Status">Status</span></th>
                             <th scope="col" class="text-center"><span title="Goal difference">Action</span></th>
                         </tr>
@@ -19,7 +18,6 @@
                         @forelse ($users as $user)
                         <tr>
                         <td>{{ $user->name }} </td>  
-                        <td>{{ $user->username }}</td>
                         <td id="{{ 'status_'.$user->id}}">{{ $user->status }}</td>
                         <td>  @if(Auth::id() == env('ADMIN_ID') )
                             <button class="btn btn-primary btn-sm" onclick='toggle_status({{$user->id}})'>Status Toggle</button>
