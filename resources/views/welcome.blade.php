@@ -17,24 +17,7 @@
 
                     <h2>Règlement des pronostics de Foot</h2>
                     <strong>Principes:</strong>
-                    <ul>
-                        <li>le prix de participation est de CHF 10.-</li>
-                        <li>l'intégralité des prix sera reversée selon le barème suivant :
-                            <ul>
-                                 <li>50 % pour le vainqueur</li>
-                                 <li>30 % pour le deuxième</li>
-                                 <li>15 % pour le troisième</li>
-                                 <li>5 % pour l'avant dernier</li>
-                                 <li>En cas d'égalité après la finale, les participants seront départagés (par ordre de priorité) :
-                                     <ol>
-                                         <li>Celui qui avait le plus de points après le premier tour</li>
-                                         <li>Une femme remporte sur un homme</li>
-                                         <li>Date de payement au sécretariat</li>
-                                         <li>Repartition des gains entre vainqueurs</li>
-                                     </ol>
-                                 </li>
-                            </ul>
-                        </li>
+                    <ul>                        
                         <li>1 feuille de pronostic par personne</li>
                         <li>Il n'y a pas de date limite pour l'inscription.</li>
                         <li><strong>Les résultats peuvent être modifiés jusqu'à un jour avant le match</strong></li>
