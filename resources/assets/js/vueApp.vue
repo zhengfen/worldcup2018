@@ -15,7 +15,8 @@
                     <router-link tag="li" class="nav-item" :to="{name: 'stadiums'}" :exact-active-class="'active'">
                         <a class="nav-link">Stadiums</a>
                     </router-link>
-                    <li class="nav-item"><a  class="nav-link" href="/ranking">Classement</a></li>                    
+                    <li class="nav-item"><a  class="nav-link" href="/ranking">Classement</a></li>    
+                    <li class="nav-item" v-if="is_admin"><a  class="nav-link" href="/admin">Admin</a></li>                      
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -35,15 +36,13 @@
 
 <script>
     export default {
-        date:function(){
-            return {
-                user: window.App.user,
-            }
-        },
         computed: {
             loading() {
                 return this.$store.state.Data.loading;
             },
+            is_admin(){
+                return this.$store.state.Data.user.id==3;
+            }
         },
         created() {
             this.$store.dispatch('loadData');

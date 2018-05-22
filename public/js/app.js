@@ -29931,7 +29931,8 @@ const state = {
     loading: true,
     data: null,
     pronostics: [],
-    statistics_group: []
+    statistics_group: [],
+    user: null
 };
 // getter's result is cached based on its dependencies, and will only re-evaluate when some of its dependencies have changed. computed properties for stores
 const getters = {};
@@ -30037,7 +30038,8 @@ const mutations = {
     ['LOAD_PRONOSTICS'](state, payload) {
         state.pronostics = payload.pronostics;
         state.statistics_group = payload.statistics_group;
-        console.log(state.statistics_group);
+        state.user = payload.user;
+        console.log(state.user);
     },
 };
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -67178,16 +67180,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    date: function date() {
-        return {
-            user: window.App.user
-        };
-    },
     computed: {
         loading: function loading() {
             return this.$store.state.Data.loading;
+        },
+        is_admin: function is_admin() {
+            return this.$store.state.Data.user.id == 3;
         }
     },
     created: function created() {
@@ -67270,7 +67271,20 @@ var render = function() {
                     [_c("a", { staticClass: "nav-link" }, [_vm._v("Stadiums")])]
                   ),
                   _vm._v(" "),
-                  _vm._m(1)
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _vm.is_admin
+                    ? _c("li", { staticClass: "nav-item" }, [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "nav-link",
+                            attrs: { href: "/admin" }
+                          },
+                          [_vm._v("Admin")]
+                        )
+                      ])
+                    : _vm._e()
                 ],
                 1
               ),

@@ -15,7 +15,11 @@
                 <li class="nav-item"><a class="nav-link" href="/vue/phase">Matches</a></li>
                 <li class="nav-item"><a class="nav-link" href="/vue/stadiums">Stadium</a></li>
                 <li {{ (isset($page) && $page == 'ranking') ? 'class=active' : ''}}><a class="nav-link" href="{{ route('ranking') }}">Classement</a></li>
-                <!--li {{ (isset($page) && $page == 'admin') ? 'class=active' : ''}}><a class="nav-link" href="{{ route('admin') }}">Admin</a></li-->
+                @auth 
+                @if( Auth::user()->id == env('ADMIN_ID') )
+                <li {{ (isset($page) && $page == 'admin') ? 'class=active' : ''}}><a class="nav-link" href="{{ route('admin') }}">Admin</a></li>
+                @endif  
+                @endauth
             </ul>
 
 

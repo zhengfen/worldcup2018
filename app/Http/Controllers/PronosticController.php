@@ -51,7 +51,8 @@ class PronosticController extends Controller
         //return $pronostics;        
         return response()->json([
             'pronostics' => $pronostics,
-            'statistics_group' => $statistics_group
+            'statistics_group' => $statistics_group,
+            'user'=>Auth::user()
         ]);
     }
     
