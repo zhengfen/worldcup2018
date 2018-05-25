@@ -29,10 +29,9 @@ class FrontController extends Controller
         return view('welcome',[
             'page' => 'home',
         ]);
-    }
+    }    
     
-     public function ranking(Request $request)
-    {   
+    protected function dataset(){
         $colorArray = array("ff0000","00ff00", "000000", "00b7ef", "800000", "ff6600", "808000", "008080", "0000ff", "666699", "808080", "ff9900", "99cc00", "33cccc", "800080", "ff00ff", "ffcc00", "ffff00", "00ff00", "00ffff", "00ccff", "c0c0c0", "ff99cc", "ffcc99", "ccffcc", "ccffff", "cc99ff", "5877ad", "5da4de", "045def", "a45208", "4e874f", "4d5e10", "4d5e10", "4d5e10", "9e4a10");
         $colorNum = count($colorArray);
         // $users = User::where('status',1)->get(); // for alro
@@ -41,7 +40,13 @@ class FrontController extends Controller
         $matches = Match::orderBy('date')->get();   
         foreach($users as $key=>$user) {
             array_push( $dataset, ['label'=>$user->name,'data'=>$user->points($matches),'backgroundColor'=>'rgba(0, 0, 0, 0)','borderColor'=>'#'.$colorArray[$key%$colorNum], 'borderWidth'=>1]); 
-        }        
+        } 
+        return $dataset; 
+    }
+    
+    public function ranking(Request $request)
+    {   
+        $dataset = $this->dataset(); 
         if ($request->wantsJson()) {
             return json_encode($dataset);         
         }
@@ -56,8 +61,33 @@ class FrontController extends Controller
         return view('vue');
     }
     
-    public function statistics(){
-        
+    public function slides(Request $request)
+    {   
+        // slide 1 : ranking page
+        $dataset = $this->dataset(); 
+        usort($dataset, function ($a,$b){ return end($b['data']) <=> end($a['data']); });          
+        // slide 2 : matches
+        $num = env('SLIDES_MATCH_NUM',5); 
+        $matches_p = Match::with(['homeTeam','awayTeam','stadium'])->orderBy('date')->whereDate('date','<',Carbon::now())->take($num)->get();  
+        $matches_n = Match::with(['homeTeam','awayTeam','stadium'])->orderBy('date')->whereDate('date','>',Carbon::now())->take($num)->get(); 
+        $statistics = Match::statistics_group($matches_p);
+        // slide 3
+        $num = env('DELTA_MATCH_NUM',2); 
+        $dataset_delta = array();
+        $count = count($dataset[0]['data']);
+        foreach($dataset as $data) {
+            array_push($dataset_delta, [
+                'label' => $data['label'],
+                'point' => ( $count > $num ? (end($data['data'])-$data['data'][$count-$num-1]) : end($data['data']))   // array_sum(array_slice($data['data'], 0-$num, $num))
+            ]);
+        }
+        usort($dataset_delta, function ($a,$b){ return $b['point'] <=> $a['point']; }); 
+        return view('slides',[
+            'dataset' => $dataset,
+            'matches_p'=>$matches_p,
+            'matches_n'=>$matches_n,
+            'dataset_delta'=>$dataset_delta,
+            'statistics'=>$statistics,
+        ]);
     }
-    
 }

@@ -15,6 +15,7 @@ Route::get('/','FrontController@welcome')->name('root');
 Route::get('/welcome','FrontController@welcome')->name('welcome');
 // Auth
 Auth::routes();
+// Welcome
 Route::get('/home', 'FrontController@welcome')->name('home');
 // Team 
 Route::get('/teams','TeamController@index');
@@ -31,11 +32,13 @@ Route::get('/pronostics','PronosticController@index')->name('pronostics');
 Route::get('/pronostics_json','PronosticController@index_json');
 Route::post('/pronostics/update_scores','PronosticController@update_scores');
 
-// classement user points ranking
+// Classement, user points ranking
 Route::get('/ranking','FrontController@ranking')->name('ranking');
 Route::get('/ranking_json','FrontController@ranking_json')->name('ranking_json');
+// Slides
+Route::get('/slides','FrontController@slides')->name('slides');
 
-// admin for set users status
+// Admin for set users status
 Route::get('/admin','AdminController@index')->name('admin');
 Route::post('/admin/status','AdminController@toggle_status')->name('toggle_status');
 

@@ -64,7 +64,7 @@ class Match extends Model
     }
     
     public function allow_pronostics(){
-        return $this->date->gt(Carbon::now()->addDay());    //addDay();  // addDays(2)
+        return $this->date->gt(Carbon::now()->addHours(24));    
     }
     
     public function allow_update(){
@@ -98,6 +98,29 @@ class Match extends Model
     public function finished(){
         if ($this->score_h !== null  && $this->score_a !== null)  return true;
         return false;
+    }
+    
+    public function statistics(){
+        $statistics = array();       
+        $pronostics = Pronostic::where('match_id',$this->id)->get();
+        if($pronostics->count()>0){
+            $count_h = 0;
+            $count_a = 0;
+            $count_tie = 0;
+            foreach($pronostics as $pronostic){
+                if ($pronostic->score_h !== null && $pronostic->score_a !== null){
+                    switch ($pronostic->score_h <=> $pronostic->score_a){
+                        case 0 : $count_tie +=1; break;   // tie
+                        case 1 : $count_h +=1; break;  // home team wins
+                        case -1: $count_a +=1; break;  // home team loses
+                    } 
+                }
+            } 
+        }
+        $statistics['percent_h'] = intval($count_h*100/$pronostics->count());
+        $statistics['percent_a'] = intval($count_a*100/$pronostics->count());
+        $statistics['percent_tie'] = intval($count_tie*100/$pronostics->count());    
+        return $statistics; 
     }
     
         // pronostic statistics for each match 

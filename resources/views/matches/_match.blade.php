@@ -16,8 +16,11 @@
     </td>
     <td class="{{ 'text-center '.$match->gameClass.'--spacer'}}" title="{{$match->stadium->name}}">
         <small>{{ 'Match '.$match->id}}</small>
+        @if(!$match->allow_pronostics())
+        <br><small>{{ $match->statistics()['percent_h']}}% {{ $match->statistics()['percent_a']}}%</small>
+        @endif
     </td>
-    <td class="{{ $match->awayClass.' '.$match->gameClass.'--awayteam' }}">
+    <td class="{{ 'text-left '.$match->awayClass.' '.$match->gameClass.'--awayteam' }}">
         <label class="{{ $match->gameClass.'--label' }}">
             <!--match score_a-->
             <input type="text" data-type="away"  id="{{ 'match-'.$match->id.'-result-away'}}" class="{{ $match->gameClass.'--result'}}" value="{{ $match->score_a}}" onchange="update_match_score_away({{$match->id}})" {{$match->allow_update()? '':'disabled'}}>
