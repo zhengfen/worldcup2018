@@ -88,6 +88,7 @@ class FrontController extends Controller
             'matches_n'=>$matches_n,
             'dataset_delta'=>$dataset_delta,
             'statistics'=>$statistics,
+            'allow_pronostics'=>Match::allow_pronostics(),
         ]);
     }
 }

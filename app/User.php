@@ -314,7 +314,7 @@ class User extends Authenticatable
                         return $pronostic->team_a;
                     }
                     else {
-                        return $pronostic.team_h;
+                        return $pronostic->team_h;
                     }
                 }
                 return null;

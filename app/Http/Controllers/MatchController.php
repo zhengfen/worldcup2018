@@ -7,6 +7,7 @@ use App\Match;
 use App\Group;
 use App\Knockout;
 use Zttp\Zttp;
+use Carbon\Carbon;
 
 class MatchController extends Controller
 {
@@ -31,6 +32,7 @@ class MatchController extends Controller
             'groups' => $groups,
             'knockouts'=>$knockouts,
             'page'=>'matches',
+            'disabled' =>Match::orderBy('date')->first()->date->lt(Carbon::now()->addHours(24)),
         ]);
     }
     

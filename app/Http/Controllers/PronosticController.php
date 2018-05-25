@@ -40,6 +40,7 @@ class PronosticController extends Controller
             'pronostics'=>$pronostics,
             'page'=>'pronostics',
             'standings'=>$standings,
+            'disabled' =>Match::orderBy('date')->first()->date->lt(Carbon::now()->addHours(24)),
         ]);
     } 
     // get pronostics for the current user and statistics
@@ -52,7 +53,8 @@ class PronosticController extends Controller
         return response()->json([
             'pronostics' => $pronostics,
             'statistics_group' => $statistics_group,
-            'user'=>Auth::user()
+            'user'=>Auth::user(),
+            'disabled' =>Match::orderBy('date')->first()->date->lt(Carbon::now()->addHours(24)),
         ]);
     }
     

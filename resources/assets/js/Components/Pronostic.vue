@@ -97,7 +97,8 @@
         },
         computed: {
             disabled(){
-                return  (  moment().add(24, 'hours').isBefore(this.game.getDate()) ) ? false : true;
+                // return  (  moment().add(24, 'hours').isBefore(this.game.getDate()) ) ? false : true;
+                return this.$store.state.Data.disabled;
             },
             pronostic(){
                let id = this.game.getId();

@@ -29932,7 +29932,8 @@ const state = {
     data: null,
     pronostics: [],
     statistics_group: [],
-    user: null
+    user: null,
+    disabled: null
 };
 // getter's result is cached based on its dependencies, and will only re-evaluate when some of its dependencies have changed. computed properties for stores
 const getters = {};
@@ -30039,6 +30040,7 @@ const mutations = {
         state.pronostics = payload.pronostics;
         state.statistics_group = payload.statistics_group;
         state.user = payload.user;
+        state.disabled = payload.disabled;
         console.log(state.user);
     },
 };
@@ -73535,7 +73537,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     }),
     computed: {
         disabled: function disabled() {
-            return __WEBPACK_IMPORTED_MODULE_5_moment___default()().add(24, 'hours').isBefore(this.game.getDate()) ? false : true;
+            // return  (  moment().add(24, 'hours').isBefore(this.game.getDate()) ) ? false : true;
+            return this.$store.state.Data.disabled;
         },
         pronostic: function pronostic() {
             var id = this.game.getId();
