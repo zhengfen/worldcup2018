@@ -24,7 +24,7 @@ class PronosticController extends Controller
     
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth');     
     }
     
     public function index()
@@ -40,7 +40,6 @@ class PronosticController extends Controller
             'pronostics'=>$pronostics,
             'page'=>'pronostics',
             'standings'=>$standings,
-            'disabled' =>Match::orderBy('date')->first()->date->lt(Carbon::now()->addHours(24)),
         ]);
     } 
     // get pronostics for the current user and statistics
@@ -54,7 +53,7 @@ class PronosticController extends Controller
             'pronostics' => $pronostics,
             'statistics_group' => $statistics_group,
             'user'=>Auth::user(),
-            'disabled' =>Match::orderBy('date')->first()->date->lt(Carbon::now()->addHours(24)),
+            'disabled' =>Match::orderBy('date')->first()->date->lt( Carbon::now()->addHours(24)),
         ]);
     }
     

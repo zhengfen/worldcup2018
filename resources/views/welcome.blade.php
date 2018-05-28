@@ -20,7 +20,7 @@
                     <ul>                        
                         <li>1 feuille de pronostic par personne</li>
                         <li>Il n'y a pas de date limite pour l'inscription.</li>
-                        <li><strong>Les résultats peuvent être modifiés jusqu'à un jour avant le match</strong></li>
+                        <li><strong>Les résultats peuvent être modifiés jusqu'à un jour avant le premier match</strong></li>
                     </ul>
                     <strong>Décompte des points</strong>
                     <ol>
