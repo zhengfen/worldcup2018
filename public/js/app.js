@@ -67183,6 +67183,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     computed: {
@@ -67217,84 +67222,100 @@ var render = function() {
           "nav",
           { staticClass: "navbar navbar-expand-lg navbar-light bg-light mb-3" },
           [
-            _c(
-              "router-link",
-              { staticClass: "navbar-brand", attrs: { to: { name: "phase" } } },
-              [_vm._v("Worldcup 2018 - Russia")]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "collapse navbar-collapse" }, [
-              _c(
-                "ul",
-                { staticClass: "navbar-nav" },
-                [
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "nav-item",
-                      attrs: {
-                        tag: "li",
-                        to: { name: "pronostics" },
-                        "exact-active-class": "active"
-                      }
-                    },
-                    [
-                      _c("a", { staticClass: "nav-link" }, [
-                        _vm._v("Pronostics")
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "nav-item",
-                      attrs: {
-                        tag: "li",
-                        to: { name: "phase" },
-                        "exact-active-class": "active"
-                      }
-                    },
-                    [_c("a", { staticClass: "nav-link" }, [_vm._v("Matches")])]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "nav-item",
-                      attrs: {
-                        tag: "li",
-                        to: { name: "stadiums" },
-                        "exact-active-class": "active"
-                      }
-                    },
-                    [_c("a", { staticClass: "nav-link" }, [_vm._v("Stadiums")])]
-                  ),
-                  _vm._v(" "),
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _vm.is_admin
-                    ? _c("li", { staticClass: "nav-item" }, [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "nav-link",
-                            attrs: { href: "/admin" }
-                          },
-                          [_vm._v("Admin")]
-                        )
-                      ])
-                    : _vm._e()
-                ],
-                1
-              ),
+            _c("div", { staticClass: "container-fluid" }, [
+              _c("a", { staticClass: "navbar-brand", attrs: { href: "/" } }, [
+                _vm._v("Worldcup 2018 - Russia")
+              ]),
               _vm._v(" "),
-              _vm._m(2)
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "collapse navbar-collapse",
+                  attrs: { id: "navbarMenu" }
+                },
+                [
+                  _c(
+                    "ul",
+                    { staticClass: "navbar-nav" },
+                    [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "nav-item",
+                          attrs: {
+                            tag: "li",
+                            to: { name: "pronostics" },
+                            "exact-active-class": "active"
+                          }
+                        },
+                        [
+                          _c("a", { staticClass: "nav-link" }, [
+                            _vm._v("Pronostics")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "nav-item",
+                          attrs: {
+                            tag: "li",
+                            to: { name: "phase" },
+                            "exact-active-class": "active"
+                          }
+                        },
+                        [
+                          _c("a", { staticClass: "nav-link" }, [
+                            _vm._v("Matches")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "nav-item",
+                          attrs: {
+                            tag: "li",
+                            to: { name: "stadiums" },
+                            "exact-active-class": "active"
+                          }
+                        },
+                        [
+                          _c("a", { staticClass: "nav-link" }, [
+                            _vm._v("Stadiums")
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm._m(2),
+                      _vm._v(" "),
+                      _vm.is_admin
+                        ? _c("li", { staticClass: "nav-item" }, [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "nav-link",
+                                attrs: { href: "/admin" }
+                              },
+                              [_vm._v("Admin")]
+                            )
+                          ])
+                        : _vm._e()
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _vm._m(3)
+                ]
+              )
             ])
-          ],
-          1
+          ]
         )
       : _vm._e(),
     _vm._v(" "),
@@ -67307,6 +67328,26 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "navbar-toggler",
+        attrs: {
+          type: "button",
+          "data-toggle": "collapse",
+          "data-target": "#navbarMenu",
+          "aria-controls": "navbarSupportedContent",
+          "aria-expanded": "false",
+          "aria-label": "Toggle navigation"
+        }
+      },
+      [_c("span", { staticClass: "navbar-toggler-icon" })]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
