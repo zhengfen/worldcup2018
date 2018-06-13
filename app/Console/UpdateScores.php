@@ -44,6 +44,7 @@ class UpdateScores extends Command
     $groups = $response['groups'];
     foreach(['a','b','c','d','e','f','g','h'] as $key=>$value){
         foreach($groups[$value]['matches'] as $match){
+            if( $match['home_result'] == null || $match['home_result'] ==null ) continue;
             Match::find($match['name'])->update(['score_h'=>$match['home_result'], 'score_a'=>$match['away_result']]);
         }
     }
@@ -51,6 +52,7 @@ class UpdateScores extends Command
     $knockout = $response['knockout'];        
     foreach(['round_16','round_8','round_4','round_2_loser','round_2'] as $key=>$value){
         foreach($knockout[$value]['matches'] as $match){
+            if( $match['home_result'] == null || $match['home_result'] ==null ) continue;
             Match::find($match['name'])->update(['score_h'=>$match['home_result'], 'score_a'=>$match['away_result']]);
         }
     }
