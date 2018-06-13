@@ -46,8 +46,9 @@ class MatchController extends Controller
     
     public function update_scores(Request $request){
         Match::find($request->match_id)->update(['score_h'=>$request->score_h,'score_a'=>$request->score_a ]);
-    }    
-    public function update_scores_from_json(){
+    }   
+    
+    public function update_scores_json(){
         $url = 'https://raw.githubusercontent.com/lsv/fifa-worldcup-2018/master/data.json';
         $response = Zttp::get($url)->json();
         // group matches
@@ -75,4 +76,5 @@ class MatchController extends Controller
             }
         }
     }
+   
 }

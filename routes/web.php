@@ -26,6 +26,8 @@ Route::get('/matches','MatchController@index')->name('matches');
 Route::post('/matches/update_score_home','MatchController@update_score_home');
 Route::post('/matches/update_score_away','MatchController@update_score_away');
 Route::post('/matches/update_scores','MatchController@update_scores');
+// update scores from remote json file 'https://raw.githubusercontent.com/lsv/fifa-worldcup-2018/master/data.json', use CronJob to update automatically
+Route::get('/matches/update_scores_json','MatchController@update_scores_json');
 
 // Pronostic
 Route::get('/pronostics','PronosticController@index')->name('pronostics');
@@ -46,3 +48,4 @@ Route::post('/admin/status','AdminController@toggle_status')->name('toggle_statu
 Route::get('/vue/{vue_capture?}', function () {
  return view('vue.index');
 })->where('vue_capture', '[\/\w\.-]*')->middleware('auth');
+
