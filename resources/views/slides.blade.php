@@ -205,7 +205,10 @@
     <!-- Required -->
     <script src=" {{ asset('js/webslides.js') }} "></script>
     <script>
-      window.ws = new WebSlides({ autoslide: 30000 }); 
+        window.ws = new WebSlides({ autoslide: 30000 });
+        setTimeout(function() {
+            location.reload();
+        }, 900000);
     </script>
     <!-- OPTIONAL - svg-icons.js (fontastic.me - Font Awesome as svg icons) -->
     <script defer src="{{ asset('js/svg-icons.js') }}"></script>

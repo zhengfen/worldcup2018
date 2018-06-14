@@ -123,7 +123,7 @@ class Match extends Model
         return $statistics; 
     }
     
-        // pronostic statistics for each match 
+    // pronostic statistics for each match 
     public static function statistics_group($matches=null){
         $statistics = array();
         if(!$matches){

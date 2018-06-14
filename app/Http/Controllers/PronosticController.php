@@ -42,32 +42,34 @@ class PronosticController extends Controller
             'standings'=>$standings,
         ]);
     } 
-    // get pronostics for the current user and statistics
+    // get pronostics for the current user and statistics, for vuex
     public function index_json()
     {          
         $pronostics = Auth::user()->pronostics;
-        $matches = Match::where('id','<',49)->where('date','<',Carbon::now()->addHours(24))->orderBy('date','asc')->get();
+        $matches = Match::where('id','<',49)->where('date','<',Carbon::now()->addHours(48))->orderBy('date','asc')->get();
         $statistics_group = Match::statistics_group($matches);
         //return $pronostics;        
         return response()->json([
             'pronostics' => $pronostics,
             'statistics_group' => $statistics_group,
             'user'=>Auth::user(),
-            'disabled' =>Match::orderBy('date')->first()->date->lt( Carbon::now()->addHours(24)),
+            'disabled' =>Match::orderBy('date')->first()->date->lt( Carbon::now()->addHours(2)),
         ]);
     }
     
     // ajax udpate    
     public function update_scores(Request $request){
+        // check date if updating pronostics is disbaled
+        $disabled = Match::orderBy('date')->first()->date->lt( Carbon::now()->addHours(2));
+        if ($disabled==true) return; 
         //validate
         $match = Match::find($request->match_id);
-        if  ( $match->date->gt(Carbon::now()->addHours(24)) ) {
-            $pronostic = Pronostic::updateOrCreate(
-                ['user_id'=>auth()->id(),'match_id'=>$request->match_id],
-                ['score_h'=>$request->score_h,'score_a'=>$request->score_a]
-                );
-            Auth::user()->update_knockouts();
-        }
+        $pronostic = Pronostic::updateOrCreate(
+            ['user_id'=>auth()->id(),'match_id'=>$request->match_id],
+            ['score_h'=>$request->score_h,'score_a'=>$request->score_a]
+            );
+        Auth::user()->update_knockouts();
+
     }
     
 }
