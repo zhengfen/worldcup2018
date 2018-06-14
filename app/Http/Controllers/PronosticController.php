@@ -69,7 +69,6 @@ class PronosticController extends Controller
             ['score_h'=>$request->score_h,'score_a'=>$request->score_a]
             );
         Auth::user()->update_knockouts();
-
     }
     
 }
