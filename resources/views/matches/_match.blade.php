@@ -1,5 +1,5 @@
 <tr class="{{ ($match->finished) ? $match->gameClass.'--finished':'' }}" id="{{'match_'.$match->id}}">
-    <td class="{{ 'text-center moment-date '.$match->gameClass.'--date' }}" title="{{ $match->date }}">{{ $match->date->diffInDays()>1? ('dans '.$match->date->diffInDays().' jours') : $match->date->diffForHumans()  }}</td>
+    <td class="{{ 'text-center moment-date '.$match->gameClass.'--date' }}" title="{{ $match->date->diffInDays()>2? ('dans '.$match->date->diffInDays().' jours') : $match->date->diffForHumans() }}">{{  $match->date }}</td>
     <td class="{{ 'text-right '.$match->homeClass.' '.$match->gameClass.'--hometeam'}}">
         @if($match->homeTeam)
             <span class="team--name">
