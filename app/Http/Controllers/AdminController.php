@@ -28,4 +28,24 @@ class AdminController extends Controller
         }
         return response()->json(['status'=>$user->status]);
     }
+    
+    public function clear_users(){
+        $users = User::all()->except(env('ADMIN_ID'))->except(env('SUPER_ADMIN_ID')); 
+        foreach($users as $user){
+            $delete = true; 
+            foreach($user->pronostics as $pronostic){
+                if ( $pronostic->score_h !== null && $pronostic->score_a !== null) { 
+                    $delete = false; 
+                    break;
+                }
+            }
+            if ($delete==true){
+                foreach($user->pronostics as $pronostic){
+                    $pronostic->delete();
+                }
+                $user->delete();
+            }
+        }
+        
+    }
 }

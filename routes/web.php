@@ -49,3 +49,6 @@ Route::get('/vue/{vue_capture?}', function () {
  return view('vue.index');
 })->where('vue_capture', '[\/\w\.-]*')->middleware('auth');
 
+// delete users who doesnt have pronostic input
+Route::get('clear/users', 'AdminController@clear_users')->middleware('super_admin');
+

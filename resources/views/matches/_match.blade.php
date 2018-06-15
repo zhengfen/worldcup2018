@@ -16,7 +16,7 @@
     </td>
     <td class="{{ 'text-center '.$match->gameClass.'--spacer'}}" title="{{$match->stadium->name}}">
         <small>{{ 'Match '.$match->id}}</small>
-        @if( $disabled)
+        @if( $disabled && $match->id<49)
         <br><small>{{ $match->statistics()['percent_h']}}% {{ $match->statistics()['percent_a']}}%</small>
         @endif
     </td>

@@ -53,14 +53,14 @@ class PronosticController extends Controller
             'pronostics' => $pronostics,
             'statistics_group' => $statistics_group,
             'user'=>Auth::user(),
-            'disabled' =>Match::orderBy('date')->first()->date->lt( Carbon::now()->addHours(2)),
+            'disabled' =>Match::orderBy('date')->first()->date->lt( Carbon::now()->addHours(24)),
         ]);
     }
     
     // ajax udpate    
     public function update_scores(Request $request){
         // check date if updating pronostics is disbaled
-        $disabled = Match::orderBy('date')->first()->date->lt( Carbon::now()->addHours(2));
+        $disabled = Match::orderBy('date')->first()->date->lt( Carbon::now()->addHours(24));
         if ($disabled==true) return; 
         //validate
         $match = Match::find($request->match_id);

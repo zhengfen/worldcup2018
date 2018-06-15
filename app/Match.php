@@ -69,8 +69,7 @@ class Match extends Model
     
     public function allow_update(){
         if (auth()->guest())  return false;
-        $allowed_users = ['fen','admin','gr'];  // array of username
-        if (in_array(auth()->user()->username,$allowed_users)) return true;
+        if (in_array(auth()->user()->username,['fen','admin','gr'])) return true;
         else return false;        
     }
     

@@ -32,7 +32,6 @@ class MatchController extends Controller
             'groups' => $groups,
             'knockouts'=>$knockouts,
             'page'=>'matches',
-            'disabled' =>Match::orderBy('date')->first()->date->lt(Carbon::now()->addHours(24)),
         ]);
     }
     
