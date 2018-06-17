@@ -68,8 +68,8 @@ class FrontController extends Controller
         usort($dataset, function ($a,$b){ return end($b['data']) <=> end($a['data']); });          
         // slide 2 : matches
         $num = env('SLIDES_MATCH_NUM',5); 
-        $matches_p = Match::with(['homeTeam','awayTeam','stadium'])->orderBy('date')->where('date','<',Carbon::now()->subHours(2)->toDateTimeString())->take($num)->get();  
-        $matches_n = Match::with(['homeTeam','awayTeam','stadium'])->orderBy('date')->where('date','>',Carbon::now()->subHours(2)->toDateTimeString())->take($num)->get(); 
+        $matches_p = Match::with(['homeTeam','awayTeam','stadium'])->where('date','<',Carbon::now()->subHours(2)->toDateTimeString())->orderBy('date','desc')->take($num)->get()->sortBy('date');          
+        $matches_n = Match::with(['homeTeam','awayTeam','stadium'])->where('date','>',Carbon::now()->subHours(2)->toDateTimeString())->orderBy('date')->take($num)->get(); 
         $statistics = Match::statistics_group($matches_p);
         // slide 3
         $num = env('DELTA_MATCH_NUM',2); 
