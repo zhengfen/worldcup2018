@@ -72,13 +72,13 @@ class FrontController extends Controller
         $matches_n = Match::with(['homeTeam','awayTeam','stadium'])->where('date','>',Carbon::now()->subHours(2)->toDateTimeString())->orderBy('date')->take($num)->get(); 
         $statistics = Match::statistics_group($matches_p);
         // slide 3
-        $num = env('DELTA_MATCH_NUM',2); 
+        $num = env('DELTA_MATCH_NUM',3); // three matches per day..
         $dataset_delta = array();
         $count = count($dataset[0]['data']);
         foreach($dataset as $data) {
             array_push($dataset_delta, [
                 'label' => $data['label'],
-                'point' => ( $count > $num ? (end($data['data'])-$data['data'][$count-$num-1]) : end($data['data']))   // array_sum(array_slice($data['data'], 0-$num, $num))
+                'point' => ( $count > $num ? (end($data['data'])-$data['data'][$count-$num]) : end($data['data']))   // array_sum(array_slice($data['data'], 0-$num, $num))
             ]);
         }
         usort($dataset_delta, function ($a,$b){ return $b['point'] <=> $a['point']; }); 

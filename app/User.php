@@ -197,7 +197,7 @@ class User extends Authenticatable
         foreach($matches as $match){
             if (is_null($match->score_h) || is_null($match->score_a))   break;   // the match is not finished yet
             else{
-                if(is_null($this->score_h($match->id)) || is_null($this->score_a($match->id))) continue;  // user have not complete the pronostics for the match
+                if(is_null($this->score_h($match->id)) || is_null($this->score_a($match->id))) { $point +=0; array_push($points,$point);continue;}  // user have not complete the pronostics for the match
                 switch(true){
                     case($match->id<49): // group match[1-48]
                         if(($this->score_h($match->id)<=>$this->score_a($match->id)) == ($match->score_h<=>$match->score_a)){
