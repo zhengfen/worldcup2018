@@ -78,7 +78,7 @@ class FrontController extends Controller
         foreach($dataset as $data) {
             array_push($dataset_delta, [
                 'label' => $data['label'],
-                'point' => ( $count > $num ? (end($data['data'])-$data['data'][$count-$num]) : end($data['data']))   // array_sum(array_slice($data['data'], 0-$num, $num))
+                'point' => ( $count-1 > $num ? (end($data['data'])-$data['data'][$count-1-$num]) : end($data['data']))   // array_sum(array_slice($data['data'], 0-$num, $num))
             ]);
         }
         usort($dataset_delta, function ($a,$b){ return $b['point'] <=> $a['point']; }); 

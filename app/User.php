@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -194,9 +195,11 @@ class User extends Authenticatable
         if(!$matches){
             $matches = Match::orderBy('date')->get();        
         }
+        $pronostics =  DB::table('pronostics')->where('user_id', auth()->id())->get();
         foreach($matches as $match){
             if (is_null($match->score_h) || is_null($match->score_a))   break;   // the match is not finished yet
             else{
+                
                 if(is_null($this->score_h($match->id)) || is_null($this->score_a($match->id))) { $point +=0; array_push($points,$point);continue;}  // user have not complete the pronostics for the match
                 switch(true){
                     case($match->id<49): // group match[1-48]
