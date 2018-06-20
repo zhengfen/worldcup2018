@@ -33,6 +33,7 @@
                    @endif
                </tbody>
            </table>
+           @if(isset($show_matches) && $show_matches==true)
            <div class="card-footer p-0">
                <table class="table-groups">
                    <tbody>
@@ -42,8 +43,8 @@
                        @endforelse
                    </tbody>
                </table>
-
            </div>
+           @endif
        </div>
     </article>
 @empty

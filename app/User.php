@@ -102,9 +102,9 @@ class User extends Authenticatable
     }
        
     // get the 16 qualified teams from match 49-56
-    public function qualified_16(){
+    public function qualified_16($pronostics=null){
         $qualified = [];
-        $pronostics = $this->pronostics->where('match_id','>','48')->where('match_id','<','57')->all();
+        if(!$pronostics) $pronostics = $this->pronostics->where('match_id','>','48')->where('match_id','<','57')->all();
         foreach($pronostics as $pronostic){
             if($pronostic->team_h)  array_push($qualified,$pronostic->team_h);
             if($pronostic->team_a)  array_push($qualified,$pronostic->team_a);
@@ -113,9 +113,9 @@ class User extends Authenticatable
     }
     
     // get the 8 qualified teams from match 57-60
-    public function qualified_8(){
+    public function qualified_8($pronostics=null){
         $qualified = [];
-        $pronostics = $this->pronostics->where('match_id','>','56')->where('match_id','<','61')->all();
+        if(!$pronostics) $pronostics = $this->pronostics->where('match_id','>','56')->where('match_id','<','61')->all();
         foreach($pronostics as $pronostic){
             if($pronostic->team_h)  array_push($qualified,$pronostic->team_h);
             if($pronostic->team_a)  array_push($qualified,$pronostic->team_a);
@@ -124,9 +124,9 @@ class User extends Authenticatable
     }
     
     // get the 4 qualified teams  from match 61,62
-    public function qualified_4(){
+    public function qualified_4($pronostics=null){
         $qualified = [];
-        $pronostics = $this->pronostics->where('match_id','>','60')->where('match_id','<','63')->all();
+        if(!$pronostics) $pronostics = $this->pronostics->where('match_id','>','60')->where('match_id','<','63')->all();
         foreach($pronostics as $pronostic){
             if($pronostic->team_h)  array_push($qualified,$pronostic->team_h);
             if($pronostic->team_a)  array_push($qualified,$pronostic->team_a);
@@ -135,17 +135,17 @@ class User extends Authenticatable
     }
     
     // get the 2 qualified teams  from match 64
-    public function qualified_2(){
+    public function qualified_2($pronostics=null){
         $qualified = [];
-        $pronostic = $this->pronostics->where('match_id','64')->first();        
+        if(!$pronostics) $pronostic = $this->pronostics->where('match_id','64')->first();        
         if($pronostic->team_h)  array_push($qualified,$pronostic->team_h);
         if($pronostic->team_a)  array_push($qualified,$pronostic->team_a);  
         return $qualified;
     }
     
     // get the 3rd  from match 63
-    public function third(){
-        $pronostic = $this->pronostics->where('match_id','63')->first();
+    public function third($pronostics=null){
+        if(!$pronostics) $pronostic = $this->pronostics->where('match_id','63')->first();
         if ($pronostic && $pronostic->team_h !== null && $pronostic->team_a !== null && $pronostic->score_h !== null && $pronostic->score_a !== null ){  
             if($pronostic->score_h > $pronostic->score_a) return $pronostic->team_h;
             return $pronostic->team_a;
@@ -153,8 +153,8 @@ class User extends Authenticatable
         return null;
     }
     // get the champion  from match 64
-    public function first(){
-        $pronostic = $this->pronostics->where('match_id','64')->first();
+    public function first($pronostics=null){
+        if(!$pronostics) $pronostic = $this->pronostics->where('match_id','64')->first();
         if ($pronostic && $pronostic->team_h !== null && $pronostic->team_a !== null && $pronostic->score_h !== null && $pronostic->score_a !== null ){  
             if($pronostic->score_h > $pronostic->score_a) return $pronostic->team_h;
             return $pronostic->team_a;
@@ -182,7 +182,7 @@ class User extends Authenticatable
             if (is_null($match->score_h) || is_null($match->score_a))   break;   // the match is not finished yet
             else{
                 $pronostic = $pronostics->where('match_id',$match->id)->first();
-                if(is_null( $pronostic->score_h) || is_null($pronostic->score_h) ) { $point +=0; array_push($points,$point);continue;}  // user have not complete the pronostics for the match
+                if(is_null($pronostic)||is_null( $pronostic->score_h) || is_null($pronostic->score_a) ) { $point +=0; array_push($points,$point);continue;}  // user have not complete the pronostics for the match
                 switch(true){
                     case($match->id<49): // group match[1-48]
                         if(($pronostic->score_h<=>$pronostic->score_a) == ($match->score_h<=>$match->score_a)){
@@ -193,30 +193,34 @@ class User extends Authenticatable
                         array_push($points,$point);
                         break;
                     case($match->id>48 && $match->id<57): // qualified [49-56] 1/8
-                        if (  in_array($match->team_h,$this->qualified_16()) )   $point += 4;
-                        if (  in_array($match->team_a,$this->qualified_16()) )   $point += 4;
+                        $qualified_16 = $this->qualified_16( $pronostics->where('match_id','>','48')->where('match_id','<','57')->get()); 
+                        if (  in_array($match->team_h,$qualified_16) )   $point += 4;
+                        if (  in_array($match->team_a,$qualified_16) )   $point += 4;
                         array_push($points,$point);
                         break;
-                    case($match->id>56 && $match->id<61):  // Quarts de finale  [57-60] 1/4  [61-62]
-                        if (  in_array($match->team_h,$this->qualified_8()) )   $point += 6;
-                        if (  in_array($match->team_a,$this->qualified_8()) )   $point += 6;
+                    case($match->id>56 && $match->id<61):  // Quarts de finale  [57-60] 1/4 
+                        $qualified_8 = $this->qualified_8( $pronostics->where('match_id','>','56')->where('match_id','<','61')->get()); 
+                        if (  in_array($match->team_h,$qualified_8) )   $point += 6;
+                        if (  in_array($match->team_a,$qualified_8) )   $point += 6;
                         array_push($points,$point);
                         break;
                     case($match->id>60 && $match->id<63):  // demi [61-62]
-                        if (  in_array($match->team_h,$this->qualified_4()) )   $point += 8;
-                        if (  in_array($match->team_a,$this->qualified_4()) )   $point += 8;
+                        $qualified_4 = $this->qualified_4( $pronostics->where('match_id','>','60')->where('match_id','<','63')->get()); 
+                        if (  in_array($match->team_h,$qualified_4) )   $point += 8;
+                        if (  in_array($match->team_a,$qualified_4) )   $point += 8;
                         array_push($points,$point);
                         break;
                     case($match->id==63):  // 3rd
                         // check if teams are correct
                         if( $match->score_h > $match->score_a)  $third = $match->team_h;
                         else $third = $match->team_a;
-                        if (  $this->third() == $third) $point += 10;
+                        if (  $this->third($pronostics->where('match_id','63')->first()) == $third) $point += 10;
                         array_push($points,$point);
                         break;
                     case($match->id==64): // final
-                        if (  in_array($match->team_h,$this->qualified_2()) )   $point += 10;
-                        if (  in_array($match->team_a,$this->qualified_2()) )   $point += 10;
+                        $qualified_2 = $this->qualified_2( $pronostics->where('match_id','64')->first()); 
+                        if (  in_array($match->team_h,$qualified_2) )   $point += 10;
+                        if (  in_array($match->team_a,$qualified_2) )   $point += 10;
                         // if the champion is right
                         if( $match->score_h > $match->score_a)  $first = $match->team_h;
                         else $first = $match->team_a;

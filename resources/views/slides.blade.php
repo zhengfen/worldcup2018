@@ -46,6 +46,106 @@
         .text-left{
             text-align : left;
         }
+        /* slides 4: group match team standins*/
+        .container-fluid {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+           font-size: 1.4rem;
+           font-weight: 600;
+           line-height: 1.5;
+          color: #212529;
+          text-align: left;
+          -ms-flex-pack: distribute;
+          justify-content: space-around ;
+          }
+        .groups {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -ms-flex-wrap: wrap;
+              flex-wrap: wrap;
+          margin-right: -15px;
+          margin-left: -15px;
+          margin-bottom: 1.5rem;
+        }
+        .groups > .col{
+          -ms-flex-preferred-size: 25%;
+              flex-basis: 25%;
+        }
+        .col {
+            -ms-flex-preferred-size: 0;
+                flex-basis: 0;
+            -webkit-box-flex: 1;
+                -ms-flex-positive: 1;
+                    flex-grow: 1;
+            max-width: 100%;
+            position: relative;
+            width: 100%;
+            min-height: 1px;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+        .mb-3{
+          margin-bottom: 1rem;
+        }
+        .card {
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                    flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            border-radius: 0.25rem;
+        }
+        .card-header {
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 0;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        }
+        .card-header:first-child {
+            border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+          }
+        .card > table {
+            margin-bottom: 0;
+        }
+        .table-bordered,
+        .table-bordered th,
+        .table-bordered td {
+          border: 1px solid #dee2e6;
+        }
+
+        .groups .card--group{
+          margin-bottom: 1.5rem !important;
+        }
+        .table-success,
+        .table-success > th,
+        .table-success > td {
+          background-color: #c3e6cb;
+        }
+        .table-info,
+        .table-info > th,
+        .table-info > td {
+          background-color: #bee5eb;
+        }
+        
+        .groups .card--group table td,
+        .groups .card--group table th{
+          padding: 0.2rem;
+          font-size: 1.1rem;
+        }
+
     </style>
 
     </head>
@@ -57,6 +157,7 @@
           - Vertical sliding = <article id="webslides" class="vertical">
           - <div class="wrap"> = container 90% / <div class="wrap size-50"> = 45%;
         -->
+        <!-- ranking -->
         <section class="bg-white aligncenter">                
           <div class="wrap">
             <div class="grid vertical-align">
@@ -88,6 +189,7 @@
           <!-- .end .wrap -->
         </section>
         
+        <!-- last 5 matches and next 5 matches -->
         <section class="bg-white aligncenter">                
           <div class="wrap">
             <div class="grid vertical-align">
@@ -118,6 +220,7 @@
           </div><!-- .end .wrap -->
         </section>
         
+        <!-- points of last $num matches -->
         <section class="bg-white aligncenter">                
           <div class="wrap">
             <div class="grid vertical-align">
@@ -155,6 +258,13 @@
                 </div>                
               </div>
             </div>
+          </div><!-- .end .wrap -->
+        </section>
+        
+        <!-- team group match standings -->
+        <section style="background: #a6a2a3;" id="slide_standings">                
+          <div class="container-fluid groups">
+            @include('matches._group')
           </div><!-- .end .wrap -->
         </section>
 
@@ -205,7 +315,7 @@
     <!-- Required -->
     <script src=" {{ asset('js/webslides.js') }} "></script>
     <script>
-        window.ws = new WebSlides({ autoslide: 30000 });
+       // window.ws = new WebSlides({ autoslide: 30000 });
         setTimeout(function() {
             location.reload();
         }, 900000);

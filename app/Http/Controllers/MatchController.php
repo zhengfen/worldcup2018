@@ -32,6 +32,7 @@ class MatchController extends Controller
             'groups' => $groups,
             'knockouts'=>$knockouts,
             'page'=>'matches',
+            'show_matches'=>true
         ]);
     }
     
