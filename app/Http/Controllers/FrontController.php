@@ -7,6 +7,7 @@ use App\Match;
 use App\Pronostic;
 use App\User;
 use App\Group;
+use App\Knockout;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon; 
 
@@ -85,7 +86,7 @@ class FrontController extends Controller
         usort($dataset_delta, function ($a,$b){ return $b['point'] <=> $a['point']; }); 
         // slide 4  team standings
         $groups = Group::with(['matches', 'teams','matches.homeTeam','matches.awayTeam','matches.stadium'])->get(); 
-        
+        $knockouts = Knockout::with(['matches','matches.homeTeam','matches.awayTeam','matches.stadium'])->get(); 
         return view('slides',[
             'dataset' => $dataset,
             'matches_p'=>$matches_p,
@@ -93,7 +94,8 @@ class FrontController extends Controller
             'dataset_delta'=>$dataset_delta,
             'statistics'=>$statistics, 
             'groups'=>$groups,  // slide4
-            'show_matches'=>false,
+            'knockouts'=>$knockouts,
+            'show_matches'=>false,            
         ]);
     }
 }
