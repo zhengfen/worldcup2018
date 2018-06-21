@@ -164,8 +164,10 @@
         
         <!-- team group match standings -->
         <section style="background: #a6a2a3;" id="slide_standings">                
-          <div class="container-fluid groups">
-            @include('matches._group')
+          <div class="container-fluid">
+              <div class="groups">
+                @include('matches._group')
+              </div>
           </div><!-- .end .wrap -->
         </section>
 
