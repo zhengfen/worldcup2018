@@ -100,8 +100,13 @@
   vertical-align: top;
   border-top: 1px solid #dee2e6;
 }
+/* no strips for the table */
 .card > table tr:nth-child(even) > td {
     background: rgba(0, 0, 0, 0);
+}
+
+.card > table thead {
+  background-color: rgba(0, 0, 0, 0); 
 }
 .groups .card--group{
   margin-bottom: 1.5rem !important;
