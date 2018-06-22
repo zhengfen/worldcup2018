@@ -1,6 +1,6 @@
 <!-- Matches -->
 @forelse($groups as $group)
-    <article class="col mb-3">
+    <div class="col mb-3">
        <div class="card card--group">
            <div class="card-header">Groupe {{ $group->name  }}</div>
            <table class="table-bordered">
@@ -46,6 +46,6 @@
            </div>
            @endif
        </div>
-    </article>
+    </div>
 @empty
 @endforelse

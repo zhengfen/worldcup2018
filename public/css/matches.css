@@ -23,6 +23,7 @@
   flex-wrap: wrap;
   margin-right: -15px;
   margin-left: -15px;
+  align-items: center;
 }
 .groups,
 .groups .card--group,
@@ -73,6 +74,9 @@
     border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 0.25rem;
 }
+.card--knockouts{
+    height: fit-content;
+}
 .card-header {
     padding: 0.75rem 1.25rem;
     margin-bottom: 0;
@@ -84,9 +88,11 @@
   }
 .card > table {
     margin-bottom: 0;
+    margin-top: 0;
     width: 100%;
     max-width: 100%;
     line-height: 1.5rem;
+    border-collapse:collapse;
 }
 .table-bordered,
 .table-bordered th,
@@ -98,7 +104,10 @@
 .card > table td{
   padding: 0.75rem;
   vertical-align: top;
-  border-top: 1px solid #dee2e6;
+}
+.table-knockouts td{
+  border-style: solid none none none;
+  border-top: 1px solid #dee2e6;  
 }
 /* no strips for the table */
 .card > table tr:nth-child(even) > td {
@@ -123,6 +132,36 @@
 }        
 .groups .card--group table td,
 .groups .card--group table th{
-  padding: 0.8rem;
+  padding: 0.6rem;
   font-size: 1.4rem;
+}
+
+.table-groups--result,
+.table-knockouts--result {
+  margin: 5px;
+  width: 2rem;
+  height: 2rem;
+  text-align: center;
+  border-radius: 0;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+  border: 1px solid #ced4da;
+}
+
+.card--round_2_loser,
+.card--round_2_loser > .card-header {
+  background-color: #ffc107 !important;
+}
+.bronze {
+  color: #cd7f32;
+}
+.fa-2x {
+  font-size: 2em;
+}
+
+.card--round_2,
+.card--round_2 > .card-header {
+  background-color: #28a745 !important;
 }

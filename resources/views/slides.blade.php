@@ -167,6 +167,9 @@
           <div class="container-fluid">
               <div class="groups">
                 @include('matches._group')
+              </div>              
+              <div class="knockouts">
+                @include('matches._knockout')
               </div>
           </div><!-- .end .wrap -->
         </section>
