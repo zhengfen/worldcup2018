@@ -130,11 +130,11 @@ class Match extends Model
         }
         foreach($matches as $match){
             $statistics[$match->id] = array();
-         //   $pronostics_count = Pronostic::where('match_id',$match->id)->count();
-         //   $count_tie = DB::table('pronostics')->where('match_id',$match->id)->whereColumn('score_h','score_a')->count();
-         //   $count_h = DB::table('pronostics')->where('match_id',$match->id)->whereColumn('score_h','>','score_a')->count();
-         //   $count_a = DB::table('pronostics')->where('match_id',$match->id)->whereColumn('score_h','<','score_a')->count(); 
-        //    SELECT COUNT(*) FROM pronostics WHERE match_id=1 UNION SELECT COUNT(*) FROM pronostics WHERE match_id=1 AND score_h > score_a UNION SELECT COUNT(*) FROM pronostics WHERE match_id=1 AND score_h < score_a
+        //   $pronostics_count = Pronostic::where('match_id',$match->id)->count();
+        //   $count_tie = DB::table('pronostics')->where('match_id',$match->id)->whereColumn('score_h','score_a')->count();
+        //   $count_h = DB::table('pronostics')->where('match_id',$match->id)->whereColumn('score_h','>','score_a')->count();
+        //   $count_a = DB::table('pronostics')->where('match_id',$match->id)->whereColumn('score_h','<','score_a')->count(); 
+        //   SELECT COUNT(*) FROM pronostics WHERE match_id=1 UNION SELECT COUNT(*) FROM pronostics WHERE match_id=1 AND score_h > score_a UNION SELECT COUNT(*) FROM pronostics WHERE match_id=1 AND score_h < score_a
             $pronostics = Pronostic::where('match_id',$match->id)->get();
             if($pronostics->count()>0){
                 $count_h = 0;
@@ -156,4 +156,72 @@ class Match extends Model
         }
         return $statistics; 
     }
+    
+    public static function update_knockouts(){
+        $knockout_matches = Match::where('id','>',48)->orderBy('date')->get();
+        foreach($knockout_matches as $match){            
+            $team = $match->getKnockoutTeam($match->type, $match->team_h_description);
+            if($team !== $match->team_h){
+                $match->update(['team_h'=>$team]);
+            }
+            $team = $match->getKnockoutTeam($match->type, $match->team_a_description);
+            if($team !== $match->team_a){
+                $match->update(['team_a'=>$team]);            
+            }
+        }
+    }
+    
+    // update table matches team for knockout match
+    public function getKnockoutTeam(string $match_type, string $matchteam) {
+        switch ($match_type) {
+            default:
+                return null;
+            case 'qualified':                
+                if ( is_string($matchteam)) {   
+                    // "name": 49, "type": "qualified", "home_team": "winner_a", "away_team": "runner_b",
+                    $splitted = explode('_',$matchteam);
+                    // get the group
+                    $group = Group::where('name', strtoupper($splitted[1]))->first();
+                    if (!$group) {
+                        throw new Exception('Group not found in '.matchteam);
+                    }
+                    // group winner team 
+                    if ( $group->finished() ){
+                        if ($splitted[0] === 'winner'){
+                            return $group->standings()[0]['team_id']; 
+                        }
+                        else{
+                            return $group->standings()[1]['team_id'];
+                        }
+                    }
+                    return null;
+                }
+                throw new Error('matchteam variable should be a string ' + matchteam + ' given');
+
+            case 'winner':
+                $match = Self::where( 'id',intval($matchteam) )->first();  
+                if ($match->score_h !== null && $match->score_a !== null) {
+                    if ($match->score_h > $match->score_a){
+                        return $match->team_h;
+                    }
+                    else {
+                        return $match->team_a;
+                    }
+                }
+                return null;
+
+            case 'loser':
+                $match = Self::where( 'id',intval($matchteam) )->first();  
+                if ($match->score_h !== null && $match->score_a !== null) {
+                    if ($match->score_h > $match->score_a){
+                        return $match->team_a;
+                    }
+                    else {
+                        return $match->team_h;
+                    }
+                }
+                return null;
+        }
+    }
+       
 }

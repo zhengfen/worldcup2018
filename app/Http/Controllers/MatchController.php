@@ -46,6 +46,7 @@ class MatchController extends Controller
     
     public function update_scores(Request $request){
         Match::find($request->match_id)->update(['score_h'=>$request->score_h,'score_a'=>$request->score_a ]);
+        Match::update_knockouts();
     }   
     
     public function update_scores_json(){

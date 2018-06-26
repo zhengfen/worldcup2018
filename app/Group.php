@@ -79,4 +79,13 @@ class Group extends Model
         return 0;
     }
     
+    public function finished(){
+        foreach($this->matches as $match){
+            if(is_null($match->score_h) || is_null($match->score_a)){
+                return false;
+            }            
+        }
+        return true;
+    }  
+    
 }
