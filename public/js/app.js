@@ -30041,7 +30041,6 @@ const mutations = {
         state.statistics_group = payload.statistics_group;
         state.user = payload.user;
         state.disabled = payload.disabled;
-        console.log(state.user);
     },
 };
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -44332,7 +44331,9 @@ class ResultParser {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Parser_data__ = __webpack_require__(144);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Parser_stadium__ = __webpack_require__(145);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Parser_channel__ = __webpack_require__(146);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__store_modules_data__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Parser_team__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__store_modules_data__ = __webpack_require__(143);
+
 
 
 
@@ -44372,10 +44373,20 @@ class KnockoutParser {
     }
     static getKnockoutTeam(type, matchteam, groups) {
         let foundmatch;
+        let foundteam;
         switch (type) {
             default:
+                if (typeof matchteam === 'number') {
+                    throw new Error('matchteam variable can not be a number with type "' + type + '"');
+                }
                 return matchteam;
             case 'qualified':
+                if (typeof matchteam === 'number') {
+                    foundteam = __WEBPACK_IMPORTED_MODULE_6__Parser_team__["a" /* default */].getTeam(matchteam);
+                    if (foundteam) {
+                        return foundteam;
+                    }
+                }
                 if (typeof matchteam === 'string') {
                     const splitted = matchteam.split('_');
                     const foundGroup = groups.find((group) => {
@@ -44395,12 +44406,24 @@ class KnockoutParser {
                 }
                 throw new Error('matchteam variable should be a string ' + matchteam + ' given');
             case 'winner':
+                if (typeof matchteam === 'number') {
+                    foundteam = __WEBPACK_IMPORTED_MODULE_6__Parser_team__["a" /* default */].getTeam(matchteam);
+                    if (foundteam) {
+                        return foundteam;
+                    }
+                }
                 foundmatch = KnockoutParser.findKnockoutMatch(matchteam);
                 if (foundmatch && foundmatch.isFinish()) {
                     return foundmatch.getWinner();
                 }
                 return 'Winner of match ' + matchteam;
             case 'loser':
+                if (typeof matchteam === 'number') {
+                    foundteam = __WEBPACK_IMPORTED_MODULE_6__Parser_team__["a" /* default */].getTeam(matchteam);
+                    if (foundteam) {
+                        return foundteam;
+                    }
+                }
                 foundmatch = KnockoutParser.findKnockoutMatch(matchteam);
                 if (foundmatch && foundmatch.isFinish()) {
                     return foundmatch.getLoser();
@@ -44415,7 +44438,7 @@ class KnockoutParser {
             k.getMatches().forEach((m) => {
                 // update pronostics
                 let match_id = m.getId();
-                let pronostic = __WEBPACK_IMPORTED_MODULE_6__store_modules_data__["a" /* default */].state.pronostics.find(function (p) {
+                let pronostic = __WEBPACK_IMPORTED_MODULE_7__store_modules_data__["a" /* default */].state.pronostics.find(function (p) {
                     return p.match_id == match_id;
                 });
                 let team;
@@ -44471,7 +44494,7 @@ class KnockoutParser {
                 throw new Error('matchteam variable should be a string ' + matchteam + ' given');
             case 'winner':
                 // "name": 57, "type": "winner", "home_team": 49, "away_team": 50,
-                pronostic = __WEBPACK_IMPORTED_MODULE_6__store_modules_data__["a" /* default */].state.pronostics.find(function (p) {
+                pronostic = __WEBPACK_IMPORTED_MODULE_7__store_modules_data__["a" /* default */].state.pronostics.find(function (p) {
                     return p.match_id == matchteam;
                 });
                 if (pronostic && pronostic.score_h !== null && pronostic.score_a !== null) {
@@ -44485,7 +44508,7 @@ class KnockoutParser {
                 return null;
             case 'loser':
                 // "name": 63, "type": "loser", "home_team": 61, "away_team": 62,
-                pronostic = __WEBPACK_IMPORTED_MODULE_6__store_modules_data__["a" /* default */].state.pronostics.find(function (p) {
+                pronostic = __WEBPACK_IMPORTED_MODULE_7__store_modules_data__["a" /* default */].state.pronostics.find(function (p) {
                     return p.match_id == matchteam;
                 });
                 if (pronostic && pronostic.score_h !== null && pronostic.score_a !== null) {
@@ -73610,15 +73633,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         hometeam: function hometeam() {
             if (this.pronostic && this.pronostic.team_h) {
-                var team_id = this.pronostic.team_h;
-                return __WEBPACK_IMPORTED_MODULE_4__Parser_team__["a" /* default */].getTeam(team_id);
+                var team_id = this.pronostic.team_h; // number
+                return __WEBPACK_IMPORTED_MODULE_4__Parser_team__["a" /* default */].getTeam(team_id); // getTeam(team: number): TeamModel|undefined
             }
             return this.game.getHomeTeam();
         },
         awayteam: function awayteam() {
             if (this.pronostic && this.pronostic.team_a) {
-                var team_id = this.pronostic.team_a;
-                return __WEBPACK_IMPORTED_MODULE_4__Parser_team__["a" /* default */].getTeam(team_id);
+                var team_id = this.pronostic.team_a; // number
+                return __WEBPACK_IMPORTED_MODULE_4__Parser_team__["a" /* default */].getTeam(team_id); // getTeam(team: number): TeamModel|undefined
             }
             return this.game.getAwayTeam();
         },

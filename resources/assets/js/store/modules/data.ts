@@ -134,7 +134,6 @@ const mutations = {
         state.statistics_group = payload.statistics_group;
         state.user = payload.user;
         state.disabled = payload.disabled;
-        console.log(state.user);
     },   
 };
 

@@ -127,15 +127,15 @@
             },
             hometeam(){
                 if (this.pronostic && this.pronostic.team_h){ 
-                    let team_id = this.pronostic.team_h;
-                    return TeamParser.getTeam(team_id);
+                    let team_id = this.pronostic.team_h; // number
+                    return TeamParser.getTeam(team_id);  // getTeam(team: number): TeamModel|undefined
                 }
                 return this.game.getHomeTeam();
             },
             awayteam(){
                 if (this.pronostic && this.pronostic.team_a){ 
-                    let team_id = this.pronostic.team_a;
-                    return TeamParser.getTeam(team_id);
+                    let team_id = this.pronostic.team_a; // number
+                    return TeamParser.getTeam(team_id);  // getTeam(team: number): TeamModel|undefined
                 }
                 return this.game.getAwayTeam();
             },

@@ -136,8 +136,8 @@
   font-size: 1.4rem;
 }
 
-.table-groups--result,
-.table-knockouts--result {
+.groups .table-groups--result,
+.knockouts .table-knockouts--result {
   margin: 5px;
   width: 2rem;
   height: 2rem;
