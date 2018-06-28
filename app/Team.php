@@ -9,6 +9,8 @@ class Team extends Model
 {
     public $timestamps = false;
     protected $fillable = ['name','abr','group_id','iso'];
+    // list of team ids profit from fair play   japon-32
+    public static $fairPlay = [32];
 
     // Relationships 
     public function group(){

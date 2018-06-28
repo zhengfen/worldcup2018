@@ -19,7 +19,10 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         \Carbon\Carbon::setLocale('fr');
         \View::composer('*', function ($view) {
-            $view->with('disabled', Match::orderBy('date')->first()->date->lt( Carbon::now()->addHours(24)));           
+            $disabled = \Cache::rememberForever('disabled', function () {
+                return Match::orderBy('date')->first()->date->lt( Carbon::now()->addHours(24)); 
+            });
+            $view->with('disabled', $disabled);           
         });
     }
 

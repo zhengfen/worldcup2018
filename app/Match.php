@@ -32,7 +32,7 @@ class Match extends Model
     }
     // accessors
     public function getGameClassAttribute(){
-        return $this->type=='table-groups'? 'groups':'table-knockouts';
+        return $this->type=='groups'? 'table-groups':'table-knockouts';
     }
     public function getHomeClassAttribute(){
         if ($this->score_h !== null  && $this->score_a !== null)  {
@@ -66,34 +66,13 @@ class Match extends Model
     public function allow_pronostics(){
         return $this->date->gt(Carbon::now()->addHours(24));    
     }
-    
+    // the users allowed to update match results
     public function allow_update(){
         if (auth()->guest())  return false;
         if (in_array(auth()->user()->username,['fen','admin','gr'])) return true;
         else return false;        
     }
-    
-    // get the group match between two teams
-    static function group_match_between(int $team_h,int $team_a){
-        if ( intval(($team_h-1)/4) !== intval(($team_a-1)/4) ) return null; // if the two teams are not in the same group, try to allowed too many database query
-        return $match = DB::table('matches')->where([
-            ['team_h',$team_h],
-            ['team_a',$team_a],
-            ])->orWhere([
-            ['team_h',$team_a],
-            ['team_a',$team_h],
-            ])->orderBy('id')->first();
-    }
-    
-    public function winner(int $match_id){
-        $match = DB::table('matches')->where('id',$match_id)->first();
-        switch ($match->score_h <=> $match->score_a ){
-            case 1 : return team_h; 
-            case 0 : return null;
-            case -1 : return team_a;    
-        }
-    }
-        
+               
     public function finished(){
         if ($this->score_h !== null  && $this->score_a !== null)  return true;
         return false;

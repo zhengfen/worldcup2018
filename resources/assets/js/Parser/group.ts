@@ -69,14 +69,15 @@ class GroupParser {
 
     private static sortStandings(matches: MatchModel[], standings: StandingModel[]): StandingModel[] {
         standings.sort((a: StandingModel, b: StandingModel) => {
+            // compare points
             if (a.getPoints() !== b.getPoints()) {
                 return a.getPoints() < b.getPoints() ? 1 : -1;
             }
-
+            // compare goal difference
             if (a.getGoalsDifference() !== b.getGoalsDifference()) {
                 return a.getGoalsDifference() < b.getGoalsDifference() ? 1 : -1;
             }
-
+            // compare match between the two team
             let match = matches.find((m: MatchModel) => {
                 const ateam = a.getTeam();
                 const bteam = b.getTeam();
@@ -112,6 +113,13 @@ class GroupParser {
                 if (match.getAwayResult() > match.getHomeResult()) {
                     return -1;
                 }
+            }
+            // fair play
+            const aTeam = a.getTeam();
+            const bTeam = b.getTeam();
+
+            if (typeof aTeam !== 'string' && typeof bTeam !== 'string') {
+                return aTeam.getWeight() < bTeam.getWeight() ? 1 : -1;
             }
         });
         return standings;

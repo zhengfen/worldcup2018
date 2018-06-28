@@ -17,7 +17,8 @@
     <td class="{{ 'text-center '.$match->gameClass.'--spacer'}}" title="{{$match->stadium->name}}">
         <small>{{ 'Match '.$match->id}}</small>
         @if( $disabled && $match->type=='group')
-        <br><small>{{ $match->statistics()['percent_h']}}% {{ $match->statistics()['percent_a']}}%</small>
+        @php $statistics=$match->statistics() @endphp
+        <br><small>{{ $statistics['percent_h']}}% {{ $statistics['percent_a']}}%</small>
         @endif
     </td>
     <td class="{{ 'text-left '.$match->awayClass.' '.$match->gameClass.'--awayteam' }}">

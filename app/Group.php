@@ -54,15 +54,15 @@ class Group extends Model
     
     // compare team standings in group phase
     static function cmp_standings($a,$b){
-         //if both teams have no pronostics yet
+         //if both teams have not played yet
         if($a['played'] == 0 && $b['played'] == 0) return 0;
         // compare points
         $cmp_points = ($b['wins']*3+$b['draws'])<=>($a['wins']*3+$a['draws']);
         if ($cmp_points !== 0) return $cmp_points;
-        // Overall goal difference
+        // compare overall goal difference
         $result = ($b['goalsFor']-$b['goalsAgainst'])<=>($a['goalsFor']-$a['goalsAgainst']);
         if ($result !== 0) return $result;
-        // Overall goals scored
+        // compare overall goals scored
         $result = $b['goalsFor']<=> $a['goalsFor'];
         if ($result !== 0) return $result;       
         //check the match between the two teams
@@ -76,6 +76,9 @@ class Group extends Model
             if ($match->score_h > $match->score_a) return 1;
             if ($match->score_h < $match->score_a) return -1;
         }
+        // fair play 
+        if(in_array($a['team_id'], Team::$fairPlay)) return -1;
+        if(in_array($b['team_id'], Team::$fairPlay)) return 1;
         return 0;
     }
     
