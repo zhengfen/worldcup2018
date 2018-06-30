@@ -179,7 +179,8 @@ class User extends Authenticatable
         }
         $pronostics =  DB::table('pronostics')->where('user_id', $this->id)->get();
         foreach($matches as $match){
-            if (is_null($match->score_h) || is_null($match->score_a))   break;   // the match is not finished yet
+            if ((is_null($match->score_h) || is_null($match->score_a))&&$match->id<49)   break;   // the match is not finished yet
+            if (is_null($match->team_h) && is_null($match->team_a))   break;  
             else{
                 $pronostic = $pronostics->where('match_id',$match->id)->first();
                 if(is_null($pronostic)||is_null( $pronostic->score_h) || is_null($pronostic->score_a) ) { $point +=0; array_push($points,$point);continue;}  // user have not complete the pronostics for the match
@@ -192,20 +193,27 @@ class User extends Authenticatable
                         } 
                         array_push($points,$point);
                         break;
+                        /*
+                    case($match->id==49): // qualified [49-56] 1/8 // points for Huitièmes de finale: 4 points pour avoir choisi la bonne équipe qualifiée
+                        $point += count(array_intersect($this->qualified_16(),Match::qualified_16()))*4;         
+                        array_push($points,$point);
+                        break;*/
+                   
                     case($match->id>48 && $match->id<57): // qualified [49-56] 1/8
-                        $qualified_16 = $this->qualified_16( $pronostics->where('match_id','>','48')->where('match_id','<','57')->get()); 
+                        $qualified_16 = $this->qualified_16(); 
                         if (  in_array($match->team_h,$qualified_16) )   $point += 4;
                         if (  in_array($match->team_a,$qualified_16) )   $point += 4;
                         array_push($points,$point);
                         break;
+                    
                     case($match->id>56 && $match->id<61):  // Quarts de finale  [57-60] 1/4 
-                        $qualified_8 = $this->qualified_8( $pronostics->where('match_id','>','56')->where('match_id','<','61')->get()); 
+                        $qualified_8 = $this->qualified_8(); 
                         if (  in_array($match->team_h,$qualified_8) )   $point += 6;
                         if (  in_array($match->team_a,$qualified_8) )   $point += 6;
                         array_push($points,$point);
                         break;
                     case($match->id>60 && $match->id<63):  // demi [61-62]
-                        $qualified_4 = $this->qualified_4( $pronostics->where('match_id','>','60')->where('match_id','<','63')->get()); 
+                        $qualified_4 = $this->qualified_4(); 
                         if (  in_array($match->team_h,$qualified_4) )   $point += 8;
                         if (  in_array($match->team_a,$qualified_4) )   $point += 8;
                         array_push($points,$point);

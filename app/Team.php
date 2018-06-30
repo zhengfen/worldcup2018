@@ -19,6 +19,5 @@ class Team extends Model
     // accessor
     public function getImagePathAttribute(){
         return ($this->id && $this->abr)? asset('images/teams/'.$this->abr.'.png') :false;
-    }  
-       
+    }
 }
