@@ -77,60 +77,65 @@ class Match extends Model
         if ($this->score_h !== null  && $this->score_a !== null)  return true;
         return false;
     }
-    
+    // pronostic statistics for a single group match 
     public function statistics(){
-        $statistics = array();       
-        $pronostics = Pronostic::where('match_id',$this->id)->get();
-        if($pronostics->count()>0){
-            $count_h = 0;
-            $count_a = 0;
-            $count_tie = 0;
-            foreach($pronostics as $pronostic){
-                if ($pronostic->score_h !== null && $pronostic->score_a !== null){
-                    switch ($pronostic->score_h <=> $pronostic->score_a){
-                        case 0 : $count_tie +=1; break;   // tie
-                        case 1 : $count_h +=1; break;  // home team wins
-                        case -1: $count_a +=1; break;  // home team loses
-                    } 
-                }
-            } 
+        $statistics = array();    
+        if($this->id<49){
+            $pronostics = Pronostic::where('match_id',$this->id)->get();
+            if($pronostics->count()>0){
+                $count_h = 0;
+                $count_a = 0;
+                foreach($pronostics as $pronostic){
+                    if ($pronostic->score_h !== null && $pronostic->score_a !== null){
+                        switch ($pronostic->score_h <=> $pronostic->score_a){
+                            case 1 : $count_h +=1; break;  // home team wins
+                            case -1: $count_a +=1; break;  // home team loses
+                        } 
+                    }
+                } 
+            }
+            $statistics['percent_h'] = intval($count_h*100/$pronostics->count());
+            $statistics['percent_a'] = intval($count_a*100/$pronostics->count());
+            return $statistics;         
         }
-        $statistics['percent_h'] = intval($count_h*100/$pronostics->count());
-        $statistics['percent_a'] = intval($count_a*100/$pronostics->count());
-        $statistics['percent_tie'] = intval($count_tie*100/$pronostics->count());    
-        return $statistics; 
+        $users_count = \Cache::remember('users_count', 60 ,function () { 
+            return User::where('status',1)->count();             
+        });
+        if($this->id>48 && $this->id<57){
+            //  retrieve pronostics for 'Round of 16' from the cache or, if they don't exist, retrieve them from the database and add them to the cache. 
+            $pronostics_16 = \Cache::remember('pronostics_16',60 ,function () {
+                return Pronostic::where('match_id','>','48')->where('match_id','<','57')->get();
+            });
+            $count_h = $pronostics_16->where('team_h',$this->team_h)->count() +  $pronostics_16->where('team_a',$this->team_h)->count(); 
+            $count_a = $pronostics_16->where('team_h',$this->team_a)->count() +  $pronostics_16->where('team_a',$this->team_a)->count();
+            $statistics['percent_h'] = intval($count_h*100/$users_count);
+            $statistics['percent_a'] = intval($count_a*100/$users_count);
+            return $statistics;    
+        }
     }
     
-    // pronostic statistics for each match 
+    // pronostic statistics for group matches 
     public static function statistics_group($matches=null){
         $statistics = array();
         if(!$matches){
             $matches = Match::where('id','<',49)->orderBy('date','asc')->get();        
         }
         foreach($matches as $match){
-            $statistics[$match->id] = array();
-        //   $pronostics_count = Pronostic::where('match_id',$match->id)->count();
-        //   $count_tie = DB::table('pronostics')->where('match_id',$match->id)->whereColumn('score_h','score_a')->count();
-        //   $count_h = DB::table('pronostics')->where('match_id',$match->id)->whereColumn('score_h','>','score_a')->count();
-        //   $count_a = DB::table('pronostics')->where('match_id',$match->id)->whereColumn('score_h','<','score_a')->count(); 
-        //   SELECT COUNT(*) FROM pronostics WHERE match_id=1 UNION SELECT COUNT(*) FROM pronostics WHERE match_id=1 AND score_h > score_a UNION SELECT COUNT(*) FROM pronostics WHERE match_id=1 AND score_h < score_a
+            $statistics[$match->id] = array();       
             $pronostics = Pronostic::where('match_id',$match->id)->get();
             if($pronostics->count()>0){
                 $count_h = 0;
                 $count_a = 0;
-                $count_tie = 0;
                 foreach($pronostics as $pronostic){
                     if ($pronostic->score_h !== null && $pronostic->score_a !== null){
                         switch ($pronostic->score_h <=> $pronostic->score_a){
-                            case 0 : $count_tie +=1; break;   // tie
                             case 1 : $count_h +=1; break;  // home team wins
                             case -1: $count_a +=1; break;  // home team loses
                         } 
                     }
                 } 
                 $statistics[$match->id]['percent_h'] = intval($count_h*100/$pronostics->count());
-                $statistics[$match->id]['percent_a'] = intval($count_a*100/$pronostics->count());
-                $statistics[$match->id]['percent_tie'] = intval($count_tie*100/$pronostics->count());    
+                $statistics[$match->id]['percent_a'] = intval($count_a*100/$pronostics->count()); 
             }
         }
         return $statistics; 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\User;
+use App\Pronostic; 
 
 class AdminController extends Controller
 {
@@ -28,7 +29,7 @@ class AdminController extends Controller
         }
         return response()->json(['status'=>$user->status]);
     }
-    
+    // delete the users did not put pronostics
     public function clear_users(){
         $users = User::all()->except(env('ADMIN_ID'))->except(env('SUPER_ADMIN_ID')); 
         foreach($users as $user){
@@ -45,7 +46,16 @@ class AdminController extends Controller
                 }
                 $user->delete();
             }
+        }        
+    }
+    // delete pronostics from unexist users
+    public function clear_pronostics(){
+        $pronostics = Pronostic::all(); 
+        $users_id = User::all()->pluck('id')->toArray();
+        foreach($pronostics as $pronostic){
+            if (! in_array($pronostic->user_id, $users_id) ){
+                $pronostic->delete();
+            }
         }
-        
     }
 }

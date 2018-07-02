@@ -72,7 +72,7 @@ class FrontController extends Controller
         $num = env('SLIDES_MATCH_NUM',5); 
         $matches_p = Match::with(['homeTeam','awayTeam'])->where('date','<',Carbon::now()->subHours(2)->toDateTimeString())->orderBy('date','desc')->take($num)->get()->sortBy('date'); 
         $matches_n = Match::with(['homeTeam','awayTeam'])->where('date','>',Carbon::now()->subHours(2)->toDateTimeString())->orderBy('date')->take($num)->get(); 
-        $statistics = Match::statistics_group($matches_p);
+        // $statistics = Match::statistics_group($matches_p);
         // slide 3: points of last $num matches
         $num = env('DELTA_MATCH_NUM',3); // three matches per day..
         $dataset_delta = array();
@@ -92,7 +92,7 @@ class FrontController extends Controller
             'matches_p'=>$matches_p,
             'matches_n'=>$matches_n,
             'dataset_delta'=>$dataset_delta,
-            'statistics'=>$statistics, 
+           // 'statistics'=>$statistics, 
             'groups'=>$groups,  // slide4
             'knockouts'=>$knockouts,
             'show_matches'=>false,            

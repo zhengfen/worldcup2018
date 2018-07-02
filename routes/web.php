@@ -51,4 +51,5 @@ Route::get('/vue/{vue_capture?}', function () {
 
 // delete users who doesnt have pronostic input
 Route::get('clear/users', 'AdminController@clear_users')->middleware('super_admin');
-
+// delete pronostics of unconfimed user
+Route::get('clear/pronostics', 'AdminController@clear_pronostics')->middleware('super_admin');
