@@ -9,7 +9,7 @@ import KnockoutParser from '../../Parser/knockout';
 import axios from 'axios';
 const Promise = require('es6-promise').Promise;
 
-const DATAURL = 'https://cdn.rawgit.com/lsv/fifa-worldcup-2018/master/data.json';
+const DATAURL = 'https://raw.githubusercontent.com/lsv/fifa-worldcup-2018/master/data.json';
 
 const state = {
     loading: true as boolean,

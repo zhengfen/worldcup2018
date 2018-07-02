@@ -16456,6 +16456,18 @@ class MatchModel {
     setAwayResult(result) {
         this.awayResult = result;
     }
+    getHomePenalty() {
+        return this.homePenalty;
+    }
+    setHomePenalty(result) {
+        this.homePenalty = result;
+    }
+    getAwayPenalty() {
+        return this.awayPenalty;
+    }
+    setAwayPenalty(result) {
+        this.awayPenalty = result;
+    }
     getDate() {
         return this.date;
     }
@@ -16476,12 +16488,24 @@ class MatchModel {
         return now.isAfter(this.getDate());
     }
     getWinner() {
+        if (this.getHomePenalty() && this.getAwayPenalty()) {
+            if (this.getHomePenalty() > this.getAwayPenalty()) {
+                return this.getHomeTeam();
+            }
+            return this.getAwayTeam();
+        }
         if (this.getHomeResult() > this.getAwayResult()) {
             return this.getHomeTeam();
         }
         return this.getAwayTeam();
     }
     getLoser() {
+        if (this.getHomePenalty() && this.getAwayPenalty()) {
+            if (this.getHomePenalty() > this.getAwayPenalty()) {
+                return this.getAwayTeam();
+            }
+            return this.getHomeTeam();
+        }
         if (this.getHomeResult() < this.getAwayResult()) {
             return this.getHomeTeam();
         }
@@ -29926,7 +29950,7 @@ exports.default = {
 
 
 const Promise = __webpack_require__(267).Promise;
-const DATAURL = 'https://cdn.rawgit.com/lsv/fifa-worldcup-2018/master/data.json';
+const DATAURL = 'https://raw.githubusercontent.com/lsv/fifa-worldcup-2018/master/data.json';
 const state = {
     loading: true,
     data: null,
@@ -44332,6 +44356,9 @@ class ResultParser {
     static getResult(match, type) {
         return type === 'home' ? match.home_result : match.away_result;
     }
+    static getPenaltyResult(match, type) {
+        return type === 'home' ? match.home_penalty : match.away_penalty;
+    }
 }
 /* harmony default export */ __webpack_exports__["a"] = (ResultParser);
 
@@ -44380,6 +44407,12 @@ class KnockoutParser {
             const stadium = __WEBPACK_IMPORTED_MODULE_4__Parser_stadium__["a" /* default */].getStadium(match.stadium);
             if (stadium) {
                 const obj = new __WEBPACK_IMPORTED_MODULE_0__Model_match__["a" /* default */](match.name, KnockoutParser.getKnockoutTeam(match.type, match.home_team, groups), KnockoutParser.getKnockoutTeam(match.type, match.away_team, groups), __WEBPACK_IMPORTED_MODULE_2__Parser_result__["a" /* default */].getResult(match, 'home'), __WEBPACK_IMPORTED_MODULE_2__Parser_result__["a" /* default */].getResult(match, 'away'), __WEBPACK_IMPORTED_MODULE_3__Parser_data__["a" /* default */].getDate(match.date), stadium, __WEBPACK_IMPORTED_MODULE_5__Parser_channel__["a" /* default */].getChannels(match.channels), match.type, match.home_team, match.away_team, key);
+                if (__WEBPACK_IMPORTED_MODULE_2__Parser_result__["a" /* default */].getPenaltyResult(match, 'home')) {
+                    obj.setHomePenalty(__WEBPACK_IMPORTED_MODULE_2__Parser_result__["a" /* default */].getPenaltyResult(match, 'home'));
+                }
+                if (__WEBPACK_IMPORTED_MODULE_2__Parser_result__["a" /* default */].getPenaltyResult(match, 'away')) {
+                    obj.setAwayPenalty(__WEBPACK_IMPORTED_MODULE_2__Parser_result__["a" /* default */].getPenaltyResult(match, 'away'));
+                }
                 KnockoutParser.knockoutmatches.push({ name: match.name, obj });
                 output.push(obj);
                 stadium.addMatch(obj);
@@ -70397,6 +70430,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
 
 
 
@@ -70477,8 +70512,27 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         finishedclass: function finishedclass() {
             return this.game.isFinish() ? this.gameclass + '--finished' : '';
         },
+        homepenalty: function homepenalty() {
+            if (this.game.getHomePenalty()) {
+                return '(' + this.game.getHomePenalty() + ')';
+            }
+            return '';
+        },
+        awaypenalty: function awaypenalty() {
+            if (this.game.getAwayPenalty()) {
+                return '(' + this.game.getAwayPenalty() + ')';
+            }
+            return '';
+        },
         homeclass: function homeclass() {
             if (this.game.isFinish()) {
+                if (this.game.getHomePenalty() !== null && this.game.getAwayPenalty() !== null) {
+                    if (this.game.getHomePenalty() > this.game.getAwayPenalty()) {
+                        return this.gameclass + '--winner';
+                    } else {
+                        return this.gameclass + '--loser';
+                    }
+                }
                 if (this.game.getHomeResult() === this.game.getAwayResult()) {
                     return this.gameclass + '--draw';
                 }
@@ -70493,6 +70547,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         awayclass: function awayclass() {
             if (this.game.isFinish()) {
+                if (this.game.getHomePenalty() !== null && this.game.getAwayPenalty() !== null) {
+                    if (this.game.getHomePenalty() > this.game.getAwayPenalty()) {
+                        return this.gameclass + '--loser';
+                    } else {
+                        return this.gameclass + '--winner';
+                    }
+                }
                 if (this.game.getHomeResult() === this.game.getAwayResult()) {
                     return this.gameclass + '--draw';
                 }
@@ -70550,7 +70611,9 @@ var render = function() {
               domProps: { value: _vm.game.getHomeResult() },
               on: { blur: _vm.setResult }
             })
-          ])
+          ]),
+          _vm._v(" "),
+          _c("span", { domProps: { textContent: _vm._s(_vm.homepenalty) } })
         ],
         1
       ),
@@ -70573,6 +70636,8 @@ var render = function() {
         "td",
         { class: _vm.awayclass + " " + _vm.gameclass + "--awayteam" },
         [
+          _c("span", { domProps: { textContent: _vm._s(_vm.awaypenalty) } }),
+          _vm._v(" "),
           _c("label", { class: _vm.gameclass + "--label" }, [
             _c("input", {
               class: _vm.gameclass + "--result",

@@ -1,8 +1,7 @@
 import TeamModel from '@/Model/team';
 import StadiumModel from '@/Model/stadium';
 import ChannelModel from '@/Model/channel';
-import moment from 'moment';
-import {Moment} from 'moment';
+import moment from 'moment'; import {Moment} from 'moment';
 import Data from '../store/modules/data'; 
 
 class MatchModel {
@@ -11,6 +10,8 @@ class MatchModel {
     private awayTeam: TeamModel | string;
     private homeResult: number | null;
     private awayResult: number | null;
+    private homePenalty: number | null;
+    private awayPenalty: number | null;
     private date: Moment;
     private stadium: StadiumModel;
     private channels: ChannelModel[] | null;
@@ -62,6 +63,22 @@ class MatchModel {
         this.awayResult = result;
     }
 
+    public getHomePenalty(): number | null {
+        return this.homePenalty;
+    }
+
+    public setHomePenalty(result: number) {
+        this.homePenalty = result;
+    }
+
+    public getAwayPenalty(): number | null {
+        return this.awayPenalty;
+    }
+
+    public setAwayPenalty(result: number) {
+        this.awayPenalty = result;
+    }
+
     public getDate(): Moment {
         return this.date;
     }
@@ -88,6 +105,12 @@ class MatchModel {
     }
 
     public getWinner(): TeamModel | string {
+        if (this.getHomePenalty() && this.getAwayPenalty()) {
+            if (this.getHomePenalty() > this.getAwayPenalty()) {
+                return this.getHomeTeam();
+            }
+            return this.getAwayTeam();
+        }
         if (this.getHomeResult() > this.getAwayResult()) {
             return this.getHomeTeam();
         }
@@ -96,6 +119,12 @@ class MatchModel {
     }
 
     public getLoser(): TeamModel | string {
+        if (this.getHomePenalty() && this.getAwayPenalty()) {
+            if (this.getHomePenalty() > this.getAwayPenalty()) {
+                return this.getAwayTeam();
+            }
+            return this.getHomeTeam();
+        }
         if (this.getHomeResult() < this.getAwayResult()) {
             return this.getHomeTeam();
         }

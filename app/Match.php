@@ -101,6 +101,9 @@ class Match extends Model
         $users_count = \Cache::remember('users_count', 60 ,function () { 
             return User::where('status',1)->count();             
         });
+        // from knockout matches
+        if( is_null($this->team_h) && is_null($this->team_h) ) return null; 
+        // Round of 16
         if($this->id>48 && $this->id<57){
             //  retrieve pronostics for 'Round of 16' from the cache or, if they don't exist, retrieve them from the database and add them to the cache. 
             $pronostics_16 = \Cache::remember('pronostics_16',60 ,function () {
@@ -108,6 +111,50 @@ class Match extends Model
             });
             $count_h = $pronostics_16->where('team_h',$this->team_h)->count() +  $pronostics_16->where('team_a',$this->team_h)->count(); 
             $count_a = $pronostics_16->where('team_h',$this->team_a)->count() +  $pronostics_16->where('team_a',$this->team_a)->count();
+            $statistics['percent_h'] = intval($count_h*100/$users_count);
+            $statistics['percent_a'] = intval($count_a*100/$users_count);
+            return $statistics;    
+        }
+        // Round of 8, Quarter-finals
+        if($this->id>56 && $this->id<61){            
+            $pronostics_8 = \Cache::remember('pronostics_8',60 ,function () {
+                return Pronostic::where('match_id','>','56')->where('match_id','<','61')->get();
+            });
+            $count_h = $pronostics_8->where('team_h',$this->team_h)->count() +  $pronostics_8->where('team_a',$this->team_h)->count(); 
+            $count_a = $pronostics_8->where('team_h',$this->team_a)->count() +  $pronostics_8->where('team_a',$this->team_a)->count();
+            $statistics['percent_h'] = intval($count_h*100/$users_count);
+            $statistics['percent_a'] = intval($count_a*100/$users_count);
+            return $statistics;    
+        }
+        // Round of 4, Semi-finals
+        if($this->id>60 && $this->id<63){            
+            $pronostics_4 = \Cache::remember('pronostics_4',60 ,function () {
+                return Pronostic::where('match_id','>','60')->where('match_id','<','63')->get();
+            });
+            $count_h = $pronostics_4->where('team_h',$this->team_h)->count() +  $pronostics_4->where('team_a',$this->team_h)->count(); 
+            $count_a = $pronostics_4->where('team_h',$this->team_a)->count() +  $pronostics_4->where('team_a',$this->team_a)->count();
+            $statistics['percent_h'] = intval($count_h*100/$users_count);
+            $statistics['percent_a'] = intval($count_a*100/$users_count);
+            return $statistics;    
+        }
+        // Third place play-off
+        if($this->id==63){            
+            $pronostics_63 = \Cache::remember('pronostics_63',60 ,function () {
+                return Pronostic::where('match_id','63')->get();
+            });
+            $count_h = $pronostics_63->where('team_h',$this->team_h)->count() +  $pronostics_63->where('team_a',$this->team_h)->count(); 
+            $count_a = $pronostics_63->where('team_h',$this->team_a)->count() +  $pronostics_63->where('team_a',$this->team_a)->count();
+            $statistics['percent_h'] = intval($count_h*100/$users_count);
+            $statistics['percent_a'] = intval($count_a*100/$users_count);
+            return $statistics;    
+        }
+        // final
+        if($this->id==64){            
+            $pronostics_final = \Cache::remember('pronostics_final',60 ,function () {
+                return Pronostic::where('match_id','64')->get();
+            });
+            $count_h = $pronostics_final->where('team_h',$this->team_h)->count() +  $pronostics_final->where('team_a',$this->team_h)->count(); 
+            $count_a = $pronostics_final->where('team_h',$this->team_a)->count() +  $pronostics_final->where('team_a',$this->team_a)->count();
             $statistics['percent_h'] = intval($count_h*100/$users_count);
             $statistics['percent_a'] = intval($count_a*100/$users_count);
             return $statistics;    

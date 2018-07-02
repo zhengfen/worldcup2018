@@ -19,7 +19,7 @@
         @if( $disabled)
             @php $statistics=$match->statistics() @endphp
             @if ($statistics)
-                <br><small>{{ $statistics['percent_h']}}% {{ $statistics['percent_a']}}%</small>
+                <br><small>{{ $statistics['percent_h']?$statistics['percent_h'].'%': ' '}} {{ $statistics['percent_a']?$statistics['percent_a'].'%':' '  }}</small>
             @endif 
         @endif
     </td>
