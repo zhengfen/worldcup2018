@@ -18,8 +18,13 @@
         <small>{{ 'Match '.$match->id}}</small>
         @if( $disabled)
             @php $statistics=$match->statistics() @endphp
-            @if ($statistics)
-                <br><small>{{ $statistics['percent_h']?$statistics['percent_h'].'%': ' '}} {{ $statistics['percent_a']?$statistics['percent_a'].'%':' '  }}</small>
+            @if($match->type == 'group')
+                <br><small>{{ $statistics['percent_h']}}% {{ $statistics['percent_a'] }}%</small>            
+            @elseif ($statistics)
+                <br><small>
+                    @if(isset($statistics['percent_h'])){{ $statistics['percent_h']}}% @endif
+                    @if(isset($statistics['percent_a'])){{ $statistics['percent_a'] }}% @endif
+                </small>    
             @endif 
         @endif
     </td>
