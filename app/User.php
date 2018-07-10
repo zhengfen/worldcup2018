@@ -135,17 +135,17 @@ class User extends Authenticatable
     }
     
     // get the 2 qualified teams  from match 64
-    public function qualified_2($pronostics=null){
+    public function qualified_2($pronostic=null){
         $qualified = [];
-        if(!$pronostics) $pronostic = $this->pronostics->where('match_id','64')->first();        
+        if(!$pronostic) $pronostic = $this->pronostics->where('match_id','64')->first();        
         if($pronostic->team_h)  array_push($qualified,$pronostic->team_h);
         if($pronostic->team_a)  array_push($qualified,$pronostic->team_a);  
         return $qualified;
     }
     
     // get the 3rd  from match 63
-    public function third($pronostics=null){
-        if(!$pronostics) $pronostic = $this->pronostics->where('match_id','63')->first();
+    public function third($pronostic=null){
+        if(!$pronostic) $pronostic = $this->pronostics->where('match_id','63')->first();
         if ($pronostic && $pronostic->team_h !== null && $pronostic->team_a !== null && $pronostic->score_h !== null && $pronostic->score_a !== null ){  
             if($pronostic->score_h > $pronostic->score_a) return $pronostic->team_h;
             return $pronostic->team_a;
