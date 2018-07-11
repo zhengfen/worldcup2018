@@ -153,8 +153,8 @@ class User extends Authenticatable
         return null;
     }
     // get the champion  from match 64
-    public function first($pronostics=null){
-        if(!$pronostics) $pronostic = $this->pronostics->where('match_id','64')->first();
+    public function first($pronostic=null){
+        if(!$pronostic) $pronostic = $this->pronostics->where('match_id','64')->first();
         if ($pronostic && $pronostic->team_h !== null && $pronostic->team_a !== null && $pronostic->score_h !== null && $pronostic->score_a !== null ){  
             if($pronostic->score_h > $pronostic->score_a) return $pronostic->team_h;
             return $pronostic->team_a;
